@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimeo Agency — Automatisation & IA pour TPE, immobilier et conciergeries | Vierzon</title>
+<meta name="description" content="Optimeo Agency accompagne TPE/PME, agents immobiliers et conciergeries dans l'automatisation (Make, n8n, Notion) et l'intégration de l'IA. Basé à Vierzon, missions dans toute la France. Découvrez Scale Up Conciergerie et le Sprint d'été.">
+<meta name="keywords" content="automatisation, intelligence artificielle, no-code, Make, n8n, TPE PME, conciergerie, agent immobilier mandataire, Vierzon, Centre-Val de Loire, formation IA entreprise">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.optimeo-agency.fr/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Optimeo Agency — Automatisation & IA pour TPE, immobilier et conciergeries">
+<meta property="og:description" content="Automatisation, no-code et IA pour TPE/PME, agents immobiliers et conciergeries. Programme Scale Up Conciergerie et Sprint d'été à tarif de lancement.">
+<meta property="og:url" content="https://www.optimeo-agency.fr/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="https://www.optimeo-agency.fr/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Optimeo Agency",
+  "image": "https://www.optimeo-agency.fr/og-image.jpg",
+  "description": "Agence d'automatisation, no-code et intégration IA pour TPE/PME, agents immobiliers mandataires et conciergeries.",
+  "founder": { "@type": "Person", "name": "Julien Fernault" },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Vierzon",
+    "addressRegion": "Centre-Val de Loire",
+    "addressCountry": "FR"
+  },
+  "areaServed": "FR",
+  "telephone": "+33749212930",
+  "email": "contact@optimeo-agency.fr",
+  "url": "https://www.optimeo-agency.fr/",
+  "sameAs": ["https://www.linkedin.com/company/optimeo-agency"],
+  "makesOffer": [
+    { "@type": "Offer", "name": "Scale Up Conciergerie", "price": "800", "priceCurrency": "EUR" },
+    { "@type": "Offer", "name": "Sprint d'été Conciergerie", "price": "29", "priceCurrency": "EUR" }
+  ]
+}
+</script>
+
+<style>
+:root{
+  --bg:#F7F9F9;
+  --surface:#FFFFFF;
+  --navy:#0A2342;
+  --navy-deep:#071B34;
+  --navy-soft:#12365E;
+  --cyan:#00C2CB;
+  --cyan-deep:#009BA3;
+  --coral:#FF5A3C;
+  --coral-deep:#E6431F;
+  --ink-soft:#54677D;
+  --ink-soft-onDark:#B7C6DA;
+  --line:#E3E9ED;
+  --radius:18px;
+  --radius-sm:12px;
+  --shadow:0 24px 60px -28px rgba(10,35,66,0.22);
+  --shadow-sm:0 10px 28px -14px rgba(10,35,66,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--navy);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{
+  font-family:'Montserrat',sans-serif;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--navy);
+}
+a{color:inherit;text-decoration:none;}
+img,svg{max-width:100%;display:block;}
+ul{list-style:none;}
+button{font:inherit;cursor:pointer;border:none;background:none;}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+section{padding:104px 0;position:relative;}
+@media (max-width:768px){section{padding:64px 0;}}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--cyan-deep);
+  margin-bottom:18px;
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--coral);display:inline-block;}
+.eyebrow.on-dark{color:var(--cyan);}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(247,249,249,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1180px;margin:0 auto;}
+.logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:19px;color:var(--navy);display:flex;align-items:center;gap:9px;}
+.logo .dot{width:10px;height:10px;border-radius:3px;background:var(--cyan);transform:rotate(45deg);}
+.nav-links{display:flex;gap:34px;align-items:center;}
+.nav-links a{font-weight:600;font-size:14.5px;color:var(--navy-soft);}
+.nav-links a:hover{color:var(--cyan-deep);}
+.nav-cta{
+  background:var(--navy);color:#fff!important;padding:11px 22px;border-radius:100px;
+  font-weight:700;font-size:14px;white-space:nowrap;
+}
+.nav-cta:hover{background:var(--navy-soft);}
+.burger{display:none;background:none;border:none;font-size:24px;color:var(--navy);}
+@media (max-width:900px){
+  .nav-links{position:fixed;top:66px;left:0;right:0;background:#fff;flex-direction:column;
+    padding:24px;gap:20px;border-bottom:1px solid var(--line);transform:translateY(-130%);
+    transition:transform .3s ease;box-shadow:var(--shadow-sm);}
+  .nav-links.open{transform:translateY(0);}
+  .burger{display:block;}
+  .nav-cta{display:none;}
+}
+
+/* ===== HERO ===== */
+.hero{padding:76px 0 60px;overflow:visible;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{font-size:clamp(34px,4.6vw,54px);line-height:1.08;margin-bottom:22px;}
+.hero h1 em{font-style:normal;color:var(--cyan-deep);}
+.hero p.lead{font-size:17.5px;color:var(--ink-soft);max-width:520px;margin-bottom:32px;}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;padding:15px 27px;border-radius:100px;
+  font-weight:700;font-size:15px;transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary{background:var(--coral);color:#fff;box-shadow:0 14px 30px -10px rgba(255,90,60,0.55);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -10px rgba(255,90,60,0.6);}
+.btn-secondary{background:#fff;color:var(--navy);border:1.5px solid var(--line);}
+.btn-secondary:hover{border-color:var(--navy);transform:translateY(-2px);}
+.btn-outline-light{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4);}
+.btn-outline-light:hover{border-color:#fff;transform:translateY(-2px);}
+.btn-cyan{background:var(--cyan);color:var(--navy-deep);box-shadow:0 14px 30px -10px rgba(0,194,203,0.5);}
+.btn-cyan:hover{transform:translateY(-2px);}
+.trust-line{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--ink-soft);font-weight:600;}
+.trust-line span{display:flex;align-items:center;gap:7px;}
+.trust-line svg{flex-shrink:0;}
+
+/* hero visual */
+.hero-visual{position:relative;}
+.hero-card{
+  background:var(--navy-deep);border-radius:24px;padding:34px;color:#fff;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 85% 10%, rgba(0,194,203,0.35), transparent 55%);
+}
+.flow-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1;margin-bottom:14px;}
+.flow-node{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px;padding:12px 14px;font-size:12.5px;font-weight:600;flex:1;
+  display:flex;align-items:center;gap:8px;
+}
+.flow-node b{color:var(--cyan);font-family:'Montserrat',sans-serif;}
+.flow-arrow{color:rgba(255,255,255,0.3);font-size:16px;}
+.hero-card .caption{font-size:12.5px;color:var(--ink-soft-onDark);margin-top:18px;position:relative;z-index:1;}
+
+/* the sprint sticker — signature element */
+.sprint-sticker{
+  position:absolute;top:-26px;right:-18px;z-index:5;
+  transform:rotate(-7deg);
+  background:var(--coral);color:#fff;
+  padding:16px 20px 18px;
+  border-radius:10px;
+  border:2px dashed rgba(255,255,255,0.55);
+  box-shadow:0 20px 40px -14px rgba(230,67,31,0.55);
+  font-family:'Montserrat',sans-serif;
+  min-width:190px;
+  text-align:center;
+}
+.sprint-sticker .tag-eyebrow{font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;opacity:0.9;}
+.sprint-sticker .tag-title{font-size:19px;font-weight:900;line-height:1.1;margin:4px 0 6px;}
+.sprint-sticker .tag-price{font-size:13px;font-weight:700;}
+.sprint-sticker .tag-price s{opacity:0.65;font-weight:500;margin-right:5px;}
+@media (max-width:960px){.sprint-sticker{position:static;transform:rotate(-3deg);margin:0 auto 24px;width:fit-content;}}
+
+/* ===== SECTION: POUR QUI ===== */
+.audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:52px;}
+@media (max-width:860px){.audience-grid{grid-template-columns:1fr;}}
+.audience-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:32px 28px;transition:transform .2s ease, box-shadow .2s ease;
+}
+.audience-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm);}
+.audience-card .icon{
+  width:46px;height:46px;border-radius:12px;background:rgba(0,194,203,0.12);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--cyan-deep);
+}
+.audience-card h3{font-size:19px;margin-bottom:10px;}
+.audience-card p{font-size:14.5px;color:var(--ink-soft);margin-bottom:16px;}
+.audience-card ul li{font-size:13.5px;color:var(--navy-soft);padding-left:18px;position:relative;margin-bottom:7px;}
+.audience-card ul li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--coral);border-radius:2px;}
+.audience-card .card-link{display:inline-block;margin-top:14px;font-size:13.5px;font-weight:700;color:var(--cyan-deep);}
+
+/* ===== SECTION: SCALE UP CONCIERGERIE (dark, distinct treatment) ===== */
+.scaleup{background:var(--navy-deep);color:#fff;}
+.scaleup .wrap{position:relative;}
+.scaleup-grid{display:grid;grid-template-columns:1fr 0.85fr;gap:56px;align-items:start;}
+@media (max-width:960px){.scaleup-grid{grid-template-columns:1fr;}}
+.scaleup h2{color:#fff;font-size:clamp(28px,3.6vw,40px);margin-bottom:18px;}
+.scaleup p.lead{color:var(--ink-soft-onDark);font-size:16.5px;max-width:520px;margin-bottom:28px;}
+.lever-list{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+.lever{display:flex;gap:16px;align-items:flex-start;}
+.lever .num{
+  font-family:'Montserrat',sans-serif;font-weight:900;font-size:14px;color:var(--navy-deep);
+  background:var(--cyan);width:30px;height:30px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.lever h4{font-size:15.5px;color:#fff;margin-bottom:3px;}
+.lever p{font-size:13.5px;color:var(--ink-soft-onDark);}
+
+.scaleup-card{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);
+  border-radius:var(--radius);padding:32px;backdrop-filter:blur(6px);
+}
+.scaleup-card .badge-live{
+  display:inline-flex;align-items:center;gap:7px;background:rgba(0,194,203,0.15);
+  color:var(--cyan);font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:100px;margin-bottom:18px;
+}
+.scaleup-card .badge-live .dot-live{width:7px;height:7px;background:var(--cyan);border-radius:50%;animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.price-row{display:flex;align-items:baseline;gap:10px;margin:18px 0 6px;}
+.price-row .price{font-family:'Montserrat',sans-serif;font-weight:900;font-size:38px;color:#fff;}
+.price-row .period{font-size:13px;color:var(--ink-soft-onDark);}
+.price-alt{font-size:13px;color:var(--ink-soft-onDark);margin-bottom:22px;}
+.guarantee{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft-onDark);margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.12);}
+
+/* ===== SECTION: SPRINT D'ÉTÉ (ticket style) ===== */
+.sprint-section{background:var(--bg);}
+.ticket{
+  background:var(--surface);border-radius:22px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1fr 320px;overflow:visible;position:relative;
+}
+@media (max-width:860px){.ticket{grid-template-columns:1fr;}}
+.ticket-main{padding:44px;}
+.ticket-side{
+  background:var(--coral);color:#fff;padding:44px 34px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  border-radius:0 22px 22px 0;position:relative;
+}
+@media (max-width:860px){.ticket-side{border-radius:0 0 22px 22px;}}
+.ticket-side::before{
+  content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;background:var(--bg);border-radius:50%;
+}
+@media (max-width:860px){.ticket-side::before{left:50%;top:-14px;transform:translate(-50%,0);}}
+.ticket-side .old-price{font-size:16px;text-decoration:line-through;opacity:0.65;font-weight:600;}
+.ticket-side .new-price{font-family:'Montserrat',sans-serif;font-size:46px;font-weight:900;line-height:1;margin:6px 0 10px;}
+.ticket-side .deadline{font-size:12.5px;font-weight:700;background:rgba(255,255,255,0.18);padding:6px 12px;border-radius:100px;margin-bottom:20px;}
+.ticket-meta{display:flex;gap:22px;flex-wrap:wrap;margin:22px 0 26px;}
+.ticket-meta .item{font-size:13.5px;}
+.ticket-meta .item b{display:block;font-family:'Montserrat',sans-serif;font-size:15px;color:var(--navy);}
+.ticket-main h2{font-size:clamp(24px,3vw,32px);margin-bottom:14px;}
+.ticket-main p.lead{color:var(--ink-soft);font-size:15.5px;margin-bottom:22px;max-width:520px;}
+.ticket-main ul{margin-bottom:8px;}
+.ticket-main ul li{font-size:14px;color:var(--navy-soft);padding-left:20px;position:relative;margin-bottom:9px;}
+.ticket-main ul li::before{content:"✓";position:absolute;left:0;color:var(--cyan-deep);font-weight:700;}
+.ticket-funnel{font-size:12.5px;color:var(--ink-soft);margin-top:20px;font-style:italic;}
+
+/* ===== SECTION: TPE/PME ===== */
+.tpe-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+@media (max-width:900px){.tpe-grid{grid-template-columns:1fr;}}
+.offer-list{display:flex;flex-direction:column;gap:0;}
+.offer-item{
+  display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--line);
+}
+.offer-item:first-child{padding-top:0;}
+.offer-item .icon{
+  width:42px;height:42px;border-radius:11px;background:rgba(255,90,60,0.1);color:var(--coral-deep);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.offer-item h4{font-size:16.5px;margin-bottom:5px;}
+.offer-item p{font-size:14px;color:var(--ink-soft);}
+.tpe-visual{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-sm);
+}
+.tpe-visual .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.stat-box{background:var(--bg);border-radius:14px;padding:20px;}
+.stat-box .n{font-family:'Montserrat',sans-serif;font-weight:900;font-size:26px;color:var(--navy);}
+.stat-box .l{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+
+/* ===== SECTION: EXEMPLES ===== */
+.examples-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px;}
+@media (max-width:900px){.examples-grid{grid-template-columns:1fr;}}
+.example-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);}
+.example-head{background:var(--navy);color:#fff;padding:20px 24px;}
+.example-head .sector{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--cyan);font-weight:700;}
+.example-head h4{font-size:16.5px;margin-top:6px;color:#fff;}
+.example-body{padding:22px 24px;}
+.example-body p{font-size:13.5px;color:var(--ink-soft);margin-bottom:14px;}
+.example-result{display:flex;align-items:center;gap:10px;background:rgba(0,194,203,0.09);border-radius:10px;padding:12px 14px;}
+.example-result .n{font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;color:var(--cyan-deep);}
+.example-result .l{font-size:12px;color:var(--navy-soft);}
+.example-note{font-size:10.5px;color:var(--ink-soft);opacity:0.75;margin-top:12px;font-style:italic;}
+.section-note{font-size:13px;color:var(--ink-soft);margin-top:36px;text-align:center;font-style:italic;}
+
+/* ===== FINAL CTA ===== */
+.final-cta{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-deep) 100%);
+  color:#fff;border-radius:28px;padding:64px 48px;text-align:center;position:relative;overflow:hidden;
+}
+.final-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%, rgba(0,194,203,0.25), transparent 50%);}
+.final-cta h2{color:#fff;font-size:clamp(26px,3.4vw,38px);margin-bottom:16px;position:relative;}
+.final-cta p{color:var(--ink-soft-onDark);font-size:16px;max-width:520px;margin:0 auto 30px;position:relative;}
+.final-cta .cta-row{justify-content:center;position:relative;}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 30px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px;}
+@media (max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
+.footer-grid h5{color:#fff;font-family:'Montserrat',sans-serif;font-size:13.5px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px;}
+.footer-grid ul li{margin-bottom:10px;font-size:13.5px;}
+.footer-grid ul li a:hover{color:#fff;}
+.footer-logo{font-family:'Montserrat',sans-serif;font-weight:900;color:#fff;font-size:19px;margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+.footer-logo .dot{width:10px;height:10px;border-radius:3px;background:var(--cyan);transform:rotate(45deg);}
+.footer-desc{font-size:13.5px;max-width:280px;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="#top" class="logo"><span class="dot"></span>Optimeo Agency</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#pour-qui">Pour qui ?</a></li>
+      <li><a href="#scale-up">Conciergeries</a></li>
+      <li><a href="#sprint">Sprint d'été</a></li>
+      <li><a href="#tpe-pme">TPE / PME</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="#contact" class="nav-cta">Réserver un échange</a>
+      <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu">☰</button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Automatisation · No-code · IA</p>
+          <h1>Moins de tâches répétitives.<br>Plus de temps pour <em>vos clients</em>.</h1>
+          <p class="lead">Optimeo Agency conçoit des systèmes d'automatisation et d'IA sur-mesure pour les TPE/PME, les agents immobiliers mandataires et les conciergeries — avec Make, n8n, Notion et Claude.</p>
+          <div class="cta-row">
+            <a href="https://cal.com/julien-ut8gp6/audit-30-min" target="_blank" rel="noopener" class="btn btn-primary">Réserver un audit gratuit (30 min)</a>
+            <a href="#scale-up" class="btn btn-secondary">Découvrir Scale Up Conciergerie</a>
+          </div>
+          <div class="trust-line">
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg> Basé à Vierzon — missions dans toute la France</span>
+            <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/></svg> Stack : Make · n8n · Notion · Brevo · Claude</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="sprint-sticker">
+            <div class="tag-eyebrow">Places limitées</div>
+            <div class="tag-title">Sprint d'été</div>
+            <div class="tag-price"><s>69€</s> 29€</div>
+          </div>
+          <div class="hero-card">
+            <div class="flow-row">
+              <div class="flow-node">📨 <b>Demande</b> reçue</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node"><b>Make</b> traite</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node"><b>Notion</b> à jour</div>
+            </div>
+            <div class="flow-row">
+              <div class="flow-node"><b>Brevo</b> relance</div>
+              <span class="flow-arrow">→</span>
+              <div class="flow-node">✅ Client <b>informé</b></div>
+            </div>
+            <p class="caption">Exemple simplifié d'un enchaînement Make → Notion → Brevo, tel que déployé chez nos clients conciergerie et TPE.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= POUR QUI ================= -->
+  <section id="pour-qui">
+    <div class="wrap">
+      <p class="eyebrow">Pour qui ?</p>
+      <h2 style="font-size:clamp(26px,3.2vw,36px);max-width:640px;">Trois publics, trois façons de vous faire gagner du temps</h2>
+
+      <div class="audience-grid">
+        <article class="audience-card">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" stroke="currentColor" stroke-width="2"/></svg></div>
+          <h3>TPE &amp; PME</h3>
+          <p>Vous perdez du temps sur des tâches répétitives : devis, relances, suivi client.</p>
+          <ul>
+            <li>Audit gratuit de 30 minutes</li>
+            <li>Automatisations sur-mesure (Make, n8n)</li>
+            <li>Formation de vos équipes à l'IA</li>
+          </ul>
+          <a href="#tpe-pme" class="card-link">Voir les offres →</a>
+        </article>
+
+        <article class="audience-card">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 4l9 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 9v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V9" stroke="currentColor" stroke-width="2"/></svg></div>
+          <h3>Agents immobiliers mandataires</h3>
+          <p>Centralisez vos leads et automatisez le suivi sans changer d'outils.</p>
+          <ul>
+            <li>Connexion Tally / Cal.com / HubSpot</li>
+            <li>Relances automatiques par email &amp; SMS</li>
+            <li>Tableau de bord Notion clair</li>
+          </ul>
+          <a href="#contact" class="card-link">En discuter →</a>
+        </article>
+
+        <article class="audience-card">
+          <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 21V9l8-6 8 6v12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="currentColor" stroke-width="2"/></svg></div>
+          <h3>Conciergeries</h3>
+          <p>Check-in, ménage, avis clients : structurez tout avec la méthode Scale Up.</p>
+          <ul>
+            <li>Programme d'accompagnement 6 mois</li>
+            <li>Méthode des 4 leviers de l'automatisation</li>
+            <li>Sprint découverte dès 29€</li>
+          </ul>
+          <a href="#scale-up" class="card-link">Voir le programme →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCALE UP CONCIERGERIE ================= -->
+  <section id="scale-up" class="scaleup">
+    <div class="wrap">
+      <div class="scaleup-grid">
+        <div>
+          <p class="eyebrow on-dark">Programme phare</p>
+          <h2>Scale Up Conciergerie</h2>
+          <p class="lead">6 mois d'accompagnement pour structurer et automatiser votre conciergerie, avec une méthode pensée pour le secteur : la méthode des 4 leviers de l'Automatisation Conciergerie.</p>
+
+          <div class="lever-list">
+            <div class="lever">
+              <span class="num">1</span>
+              <div><h4>Centraliser</h4><p>Un seul endroit pour vos réservations, votre ménage et vos échanges voyageurs.</p></div>
+            </div>
+            <div class="lever">
+              <span class="num">2</span>
+              <div><h4>Automatiser</h4><p>Check-in, relances et demandes d'avis déclenchés sans intervention manuelle.</p></div>
+            </div>
+            <div class="lever">
+              <span class="num">3</span>
+              <div><h4>Déléguer</h4><p>Des workflows clairs que votre équipe peut suivre sans vous.</p></div>
+            </div>
+            <div class="lever">
+              <span class="num">4</span>
+              <div><h4>Piloter</h4><p>Un tableau de bord pour suivre l'activité en un coup d'œil.</p></div>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <a href="https://scale-up-conciergerie.vercel.app" target="_blank" rel="noopener" class="btn btn-cyan">Voir le programme complet</a>
+            <a href="https://cal.com/julien-ut8gp6/decouverte-scale-up-45-min" target="_blank" rel="noopener" class="btn btn-outline-light">Réserver un appel découverte</a>
+          </div>
+        </div>
+
+        <div class="scaleup-card">
+          <span class="badge-live"><span class="dot-live"></span>Cohorte en cours de constitution</span>
+          <div class="price-row"><span class="price">800€ TTC</span><span class="period">/ 6 mois</span></div>
+          <div class="price-alt">ou 4 × 200€ — sans frais</div>
+          <ul style="display:flex;flex-direction:column;gap:12px;font-size:14px;color:var(--ink-soft-onDark);">
+            <li>✓ Accompagnement individuel sur 6 mois</li>
+            <li>✓ Méthode des 4 leviers appliquée à votre activité</li>
+            <li>✓ Système Make / Notion / Brevo configuré avec vous</li>
+            <li>✓ Support direct entre les sessions</li>
+          </ul>
+          <div class="guarantee">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2"/></svg>
+            Garantie satisfait ou remboursé 30 jours
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPRINT D'ÉTÉ ================= -->
+  <section id="sprint" class="sprint-section">
+    <div class="wrap">
+      <p class="eyebrow">Offre de lancement</p>
+      <h2 style="font-size:clamp(26px,3.2vw,36px);max-width:640px;margin-bottom:40px;">Le Sprint d'été — repartez avec un système fonctionnel en 2h</h2>
+
+      <div class="ticket">
+        <div class="ticket-main">
+          <h2>Sprint automatisation conciergerie</h2>
+          <p class="lead">Une session courte et concrète pour construire, en direct, votre premier système d'automatisation : collecte des demandes voyageurs et relance automatique post-séjour.</p>
+          <div class="ticket-meta">
+            <div class="item"><b>Vendredi 24 juillet</b>Date</div>
+            <div class="item"><b>14h – 16h</b>Horaires</div>
+            <div class="item"><b>Visio en direct</b>Format</div>
+          </div>
+          <ul>
+            <li>Cadrage des 3 automatisations qui font gagner le plus de temps</li>
+            <li>Construction guidée d'un formulaire connecté à votre messagerie</li>
+            <li>Repartez avec un workflow actif, pas juste des notes</li>
+          </ul>
+          <p class="ticket-funnel">La suite logique du Sprint pour aller plus loin : Scale Up Conciergerie.</p>
+        </div>
+        <div class="ticket-side">
+          <div class="old-price">69€</div>
+          <div class="new-price">29€</div>
+          <div class="deadline">Tarif valable jusqu'au 17 juillet</div>
+          <a href="https://tally.so/r/9q5PvK" target="_blank" rel="noopener" class="btn" style="background:#fff;color:var(--coral-deep);width:100%;justify-content:center;">Je réserve ma place</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TPE / PME ================= -->
+  <section id="tpe-pme">
+    <div class="wrap">
+      <div class="tpe-grid">
+        <div>
+          <p class="eyebrow">TPE &amp; PME</p>
+          <h2 style="font-size:clamp(26px,3.2vw,36px);margin-bottom:24px;">Automatiser et former, sans jargon technique</h2>
+          <div class="offer-list">
+            <div class="offer-item">
+              <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div><h4>Audit gratuit (30 min)</h4><p>On identifie ensemble une tâche répétitive qui vous coûte du temps chaque semaine.</p></div>
+            </div>
+            <div class="offer-item">
+              <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+              <div><h4>Automatisation sur-mesure</h4><p>Devis, relances clients, suivi de dossiers : construit avec Make ou n8n, connecté à vos outils existants.</p></div>
+            </div>
+            <div class="offer-item">
+              <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2a5 5 0 015 5c0 2-1 3-2 4s-1 2-1 3H10c0-1 0-2-1-3s-2-2-2-4a5 5 0 015-5z" stroke="currentColor" stroke-width="2"/><path d="M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div><h4>Formation IA pour vos équipes</h4><p>Ateliers concrets pour que vos collaborateurs utilisent l'IA au quotidien, sans en avoir peur.</p></div>
+            </div>
+            <div class="offer-item">
+              <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18" stroke="currentColor" stroke-width="2"/></svg></div>
+              <div><h4>Accompagnement projet complet</h4><p>Jusqu'au développement d'outils sur-mesure quand un simple automatisme ne suffit plus.</p></div>
+            </div>
+          </div>
+          <a href="https://cal.com/julien-ut8gp6/audit-30-min" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:28px;">Discuter de mon projet</a>
+        </div>
+
+        <div class="tpe-visual">
+          <p class="eyebrow" style="margin-bottom:20px;">Ce que ça change concrètement</p>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="n">-70%</div><div class="l">de tâches de relance manuelles</div></div>
+            <div class="stat-box"><div class="n">1 outil</div><div class="l">central pour suivre l'activité</div></div>
+            <div class="stat-box"><div class="n">24/7</div><div class="l">de traitement automatique des demandes</div></div>
+            <div class="stat-box"><div class="n">2-4 sem.</div><div class="l">pour un premier système en place</div></div>
+          </div>
+          <p style="font-size:12px;color:var(--ink-soft);margin-top:16px;font-style:italic;">Ordres de grandeur observés selon la complexité du projet — évalués ensemble lors de l'audit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXEMPLES ================= -->
+  <section id="exemples">
+    <div class="wrap">
+      <p class="eyebrow">Exemples de missions</p>
+      <h2 style="font-size:clamp(26px,3.2vw,36px);max-width:680px;">Le type de résultat qu'on construit ensemble</h2>
+
+      <div class="examples-grid">
+        <article class="example-card">
+          <div class="example-head"><span class="sector">Conciergerie</span><h4>Gestion des avis voyageurs</h4></div>
+          <div class="example-body">
+            <p>Relance automatique post-séjour par email et SMS, avec suivi centralisé dans Notion.</p>
+            <div class="example-result"><span class="n">+5h</span><span class="l">libérées par semaine sur le suivi client</span></div>
+            <p class="example-note">Exemple illustratif du type de résultat visé — hors chiffres clients réels.</p>
+          </div>
+        </article>
+
+        <article class="example-card">
+          <div class="example-head"><span class="sector">TPE — Artisanat</span><h4>Devis générés automatiquement</h4></div>
+          <div class="example-body">
+            <p>Formulaire de demande connecté à un modèle de devis auto-rempli et envoyé par email.</p>
+            <div class="example-result"><span class="n">-3j</span><span class="l">de délai moyen d'envoi de devis</span></div>
+            <p class="example-note">Exemple illustratif du type de résultat visé — hors chiffres clients réels.</p>
+          </div>
+        </article>
+
+        <article class="example-card">
+          <div class="example-head"><span class="sector">Immobilier</span><h4>Suivi des leads mandataires</h4></div>
+          <div class="example-body">
+            <p>Centralisation des demandes de contact et séquence de relance automatique sur 10 jours.</p>
+            <div class="example-result"><span class="n">0</span><span class="l">lead oublié dans le tableur</span></div>
+            <p class="example-note">Exemple illustratif du type de résultat visé — hors chiffres clients réels.</p>
+          </div>
+        </article>
+      </div>
+      <p class="section-note">Ces exemples illustrent les types de systèmes construits — les études de cas avec vos futurs clients viendront enrichir cette section.</p>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="final-cta">
+        <p class="eyebrow on-dark" style="justify-content:center;display:flex;">Parlons de votre projet</p>
+        <h2>Un projet, une question ?<br>Réservons 30 minutes.</h2>
+        <p>Sans engagement — on regarde ensemble ce qui peut vous faire gagner du temps dès maintenant.</p>
+        <div class="cta-row">
+          <a href="https://cal.com/julien-ut8gp6/30min" target="_blank" rel="noopener" class="btn btn-cyan">Réserver un créneau</a>
+          <a href="tel:+33749212930" class="btn btn-outline-light">07 49 21 29 30</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><span class="dot"></span>Optimeo Agency</div>
+        <p class="footer-desc">Automatisation, no-code et IA pour TPE/PME, agents immobiliers mandataires et conciergeries. Basé à Vierzon, Centre-Val de Loire.</p>
+      </div>
+      <div>
+        <h5>Navigation</h5>
+        <ul>
+          <li><a href="#pour-qui">Pour qui ?</a></li>
+          <li><a href="#scale-up">Scale Up Conciergerie</a></li>
+          <li><a href="#sprint">Sprint d'été</a></li>
+          <li><a href="#tpe-pme">TPE / PME</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:contact@optimeo-agency.fr">contact@optimeo-agency.fr</a></li>
+          <li><a href="tel:+33749212930">07 49 21 29 30</a></li>
+          <li>Vierzon, Centre-Val de Loire</li>
+        </ul>
+      </div>
+      <div>
+        <h5>Suivre</h5>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/julien-fernault" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Optimeo Agency — Julien Fernault. Tous droits réservés.</span>
+      <span><a href="#">Mentions légales</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('burgerBtn').addEventListener('click', function(){
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){document.getElementById('navLinks').classList.remove('open');});
+});
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.audience-card, .example-card, .ticket, .scaleup-grid').forEach(function(el){
+    el.classList.add('reveal'); observer.observe(el);
+  });
+}
+</script>
+
+</body>
+</html>
