@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint Conciergerie — Automatisez votre conciergerie en 2h | Optimeo Agency</title>
+<meta name="description" content="Un atelier en direct de 2h pour construire votre système d'automatisation de conciergerie : formulaire d'accueil, demande d'avis, base centralisée. 29€ jusqu'au 17 juillet.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://optimeo-agency.fr/sprint-conciergerie.html">
+<meta property="og:title" content="Sprint Conciergerie — Construisez votre système en 2h">
+<meta property="og:description" content="Atelier en direct pour automatiser votre conciergerie : formulaire d'accueil, demande d'avis, base centralisée. 29€ au lieu de 69€ jusqu'au 17 juillet.">
+<meta property="og:image" content="https://optimeo-agency.fr/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="fr_FR">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sprint Conciergerie — Construisez votre système en 2h">
+<meta name="twitter:description" content="Atelier en direct pour automatiser votre conciergerie. 29€ au lieu de 69€ jusqu'au 17 juillet.">
+<meta name="twitter:image" content="https://optimeo-agency.fr/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A2342;
+    --navy-2:#0D2C52;
+    --cyan:#00C2CB;
+    --cyan-dim:rgba(0,194,203,0.12);
+    --grey:#5B6B7C;
+    --lightbg:#F4F7F9;
+    --line:#E3E9EE;
+    --maxw:1080px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Montserrat',sans-serif;
+    color:var(--navy);
+    background:#fff;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  @media (max-width:720px){ section{padding:56px 0;} }
+
+  h1,h2,h3{font-weight:800;letter-spacing:-0.01em;}
+  .eyebrow{
+    color:var(--cyan);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,35,66,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .nav-logo{color:#fff;font-weight:800;font-size:15px;letter-spacing:0.5px;}
+  .nav-logo span{color:var(--cyan);}
+  .nav-cta{
+    background:var(--cyan);color:var(--navy);font-weight:700;font-size:13px;
+    padding:9px 18px;border-radius:30px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(120% 140% at 85% -10%, #123a63 0%, var(--navy) 55%);
+    color:#fff;position:relative;overflow:hidden;padding:72px 0 64px;
+  }
+  .hero-ring{
+    position:absolute;right:-140px;bottom:-160px;width:420px;height:420px;
+    border-radius:50%;border:1.5px solid rgba(0,194,203,0.25);
+  }
+  .hero-ring.small{right:-60px;bottom:-60px;width:200px;height:200px;border-color:rgba(0,194,203,0.4);}
+  .badge-urgent{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--cyan-dim);border:1px solid rgba(0,194,203,0.35);
+    color:var(--cyan);font-weight:700;font-size:13px;
+    padding:8px 16px;border-radius:30px;margin-bottom:28px;
+  }
+  .hero h1{
+    font-size:44px;line-height:1.12;max-width:680px;margin-bottom:20px;
+  }
+  .hero h1 em{color:var(--cyan);font-style:normal;}
+  .hero p.sub{
+    font-size:18px;color:#C9D6E3;max-width:560px;font-weight:400;margin-bottom:32px;
+  }
+  .meta-row{
+    display:flex;flex-wrap:wrap;gap:14px;margin-bottom:36px;
+  }
+  .meta-pill{
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+    color:#fff;font-size:13.5px;font-weight:600;
+    padding:9px 16px;border-radius:8px;display:flex;align-items:center;gap:8px;
+  }
+  .meta-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);}
+
+  .btn-primary{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--cyan);color:var(--navy);font-weight:700;font-size:15.5px;
+    padding:16px 30px;border-radius:30px;border:none;cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,194,203,0.25);
+    transition:transform .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .price-note{margin-top:14px;font-size:13px;color:#9DB0C4;}
+  .price-note strong{color:var(--cyan);}
+
+  /* ---------- PROBLEM ---------- */
+  .problem{background:#fff;}
+  .problem h2{font-size:30px;max-width:640px;margin-bottom:18px;}
+  .problem h2 em{color:var(--cyan);font-style:normal;}
+  .problem p{font-size:16px;color:var(--grey);max-width:620px;}
+  .problem p + p{margin-top:14px;}
+
+  /* ---------- BUILD CARDS ---------- */
+  .build{background:var(--lightbg);}
+  .section-head{max-width:620px;margin-bottom:44px;}
+  .section-head h2{font-size:30px;margin-top:10px;}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:860px){ .cards{grid-template-columns:1fr;} }
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:30px 26px;
+  }
+  .card .num{
+    width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--cyan);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+  }
+  .card h3{font-size:17px;margin-bottom:10px;}
+  .card p{font-size:14.5px;color:var(--grey);}
+
+  /* ---------- WHY FORMAT ---------- */
+  .why{background:#fff;}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;margin-top:8px;}
+  @media (max-width:860px){ .why-grid{grid-template-columns:1fr;gap:28px;} }
+  .why-item h3{font-size:16.5px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+  .why-item h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cyan);flex-shrink:0;}
+  .why-item p{font-size:14.5px;color:var(--grey);padding-left:18px;}
+
+  /* ---------- PRICING ---------- */
+  .pricing{background:var(--navy);color:#fff;}
+  .price-card{
+    max-width:520px;margin:0 auto;text-align:center;
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);
+    border-radius:16px;padding:48px 36px;
+  }
+  .price-card .eyebrow{display:block;margin-bottom:18px;}
+  .price-row{display:flex;align-items:baseline;justify-content:center;gap:14px;margin-bottom:6px;}
+  .price-old{font-size:22px;color:#7C8FA5;text-decoration:line-through;font-weight:600;}
+  .price-new{font-size:52px;font-weight:800;color:var(--cyan);}
+  .price-until{font-size:13.5px;color:#9DB0C4;margin-bottom:30px;}
+  .price-card ul{list-style:none;text-align:left;max-width:320px;margin:0 auto 32px;}
+  .price-card li{
+    font-size:14.5px;color:#DCE6EF;padding-left:26px;position:relative;margin-bottom:12px;
+  }
+  .price-card li::before{
+    content:"✓";position:absolute;left:0;color:var(--cyan);font-weight:800;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq{background:#fff;}
+  .faq-list{max-width:720px;}
+  details{
+    border-bottom:1px solid var(--line);padding:20px 0;
+  }
+  summary{
+    font-weight:700;font-size:15.5px;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;color:var(--navy);
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{
+    content:"+";font-size:20px;color:var(--cyan);font-weight:700;flex-shrink:0;margin-left:16px;
+  }
+  details[open] summary::after{content:"–";}
+  details p{margin-top:12px;font-size:14.5px;color:var(--grey);max-width:600px;}
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    background:linear-gradient(135deg,var(--navy) 0%,#123a63 100%);
+    color:#fff;text-align:center;
+  }
+  .final-cta h2{font-size:32px;max-width:600px;margin:0 auto 14px;}
+  .final-cta h2 em{color:var(--cyan);font-style:normal;}
+  .final-cta p{color:#C9D6E3;font-size:16px;margin-bottom:34px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--navy-2);color:#7C8FA5;padding:28px 0;font-size:13px;text-align:center;}
+  footer span{color:var(--cyan);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-logo">OPTI<span>MEO</span> AGENCY</div>
+    <a href="#tarif" class="nav-cta">Réserver — 29€</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-ring"></div>
+  <div class="hero-ring small"></div>
+  <div class="wrap">
+    <div class="badge-urgent">🔥 29€ au lieu de 69€ — jusqu'au 17 juillet</div>
+    <h1>Construisez votre système d'automatisation en <em>2h</em>, pas en 2 mois</h1>
+    <p class="sub">Un atelier en direct pour repartir avec votre formulaire d'accueil voyageur et votre séquence de demande d'avis, déjà actifs — sans compétence technique.</p>
+
+    <div class="meta-row">
+      <div class="meta-pill"><span class="dot"></span> 100% en ligne, en direct</div>
+      <div class="meta-pill"><span class="dot"></span> Replay inclus pour les inscrits</div>
+      <div class="meta-pill"><span class="dot"></span> Places limitées</div>
+    </div>
+
+    <a href="#tarif" class="btn-primary">Je réserve ma place — 29€ →</a>
+    <div class="price-note">Prochaine session le <strong>vendredi 24 juillet</strong></div>
+  </div>
+</header>
+
+<!-- ===================== PROBLEM ===================== -->
+<section class="problem">
+  <div class="wrap">
+    <span class="eyebrow">Le constat</span>
+    <h2 style="margin-top:10px;">Vous savez que vous devriez automatiser. <em>Vous ne l'avez juste jamais fait.</em></h2>
+    <p>Entre la gestion des voyageurs, les relances et le reste de votre activité, prendre le temps d'apprendre un nouvel outil seul, c'est le genre de chose qu'on repousse à "quand j'aurai le temps". Sauf que ce moment n'arrive jamais.</p>
+    <p>Le Sprint Conciergerie existe pour supprimer cette excuse : une session courte, en direct, avec quelqu'un qui construit avec vous. Vous ne repartez pas avec une liste de tutos à regarder plus tard — vous repartez avec un système qui tourne déjà.</p>
+  </div>
+</section>
+
+<!-- ===================== WHAT YOU BUILD ===================== -->
+<section class="build">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Ce que vous construisez</span>
+      <h2>Trois automatisations, prêtes à l'issue de la session</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="num">1</div>
+        <h3>Le formulaire d'accueil automatique</h3>
+        <p>Dès qu'une réservation est confirmée, le voyageur reçoit un formulaire pour ses infos d'arrivée, puis les instructions d'accès automatiquement, au bon moment.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h3>La séquence de demande d'avis</h3>
+        <p>Un message envoyé automatiquement après le départ, au moment où la satisfaction est la plus fraîche — sans jamais relancer à la main.</p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h3>Une base centralisée pour tout suivre</h3>
+        <p>Chaque information collectée alimente une base unique, sans ressaisie et sans fichier Excel dispersé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WHY THIS FORMAT ===================== -->
+<section class="why">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Pourquoi ce format</span>
+      <h2>Pensé pour que vous repartiez avec quelque chose de fait</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <h3>En direct, pas en replay passif</h3>
+        <p>Vous construisez pendant que j'explique — vous repartez avec le système déjà en place, pas une vidéo à regarder plus tard.</p>
+      </div>
+      <div class="why-item">
+        <h3>Petit groupe</h3>
+        <p>Assez restreint pour que vos questions spécifiques à votre activité soient traitées en direct.</p>
+      </div>
+      <div class="why-item">
+        <h3>Replay inclus</h3>
+        <p>Indisponible le jour J ? Vous recevez l'enregistrement pour refaire la session à votre rythme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section class="pricing" id="tarif">
+  <div class="wrap">
+    <div class="price-card">
+      <span class="eyebrow">Tarif de lancement</span>
+      <div class="price-row">
+        <span class="price-old">69€</span>
+        <span class="price-new">29€</span>
+      </div>
+      <div class="price-until">Offre valable jusqu'au 17 juillet inclus</div>
+      <ul>
+        <li>L'accès au live du vendredi 24 juillet</li>
+        <li>Le replay de la session</li>
+        <li>Les templates prêts à dupliquer (formulaire, séquence email)</li>
+      </ul>
+      <a href="https://tally.so/r/Meq5Pl" target="_blank" rel="noopener" class="btn-primary">Je réserve ma place — 29€ →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Questions fréquentes</span>
+      <h2>Ce qu'il faut savoir avant de vous inscrire</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Je ne suis pas disponible le 24 juillet, ça vaut le coup de m'inscrire ?</summary>
+        <p>Oui — vous recevez le replay et les templates, vous pouvez tout refaire à votre rythme.</p>
+      </details>
+      <details>
+        <summary>Je n'y connais rien en automatisation, c'est un problème ?</summary>
+        <p>Non, le Sprint est justement construit pour ça : chaque étape est expliquée et faite en direct avec vous, aucun prérequis technique.</p>
+      </details>
+      <details>
+        <summary>Quels outils vais-je utiliser ?</summary>
+        <p>Des outils simples et gratuits ou peu coûteux (formulaire en ligne + automatisation + emailing). Le détail exact est communiqué avant la session.</p>
+      </details>
+      <details>
+        <summary>Le tarif remonte vraiment après le 17 juillet ?</summary>
+        <p>Oui, à 69€. C'est le tarif de lancement réservé à la première cohorte.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FINAL CTA ===================== -->
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Reprenez <em>5h par semaine</em> dès la semaine prochaine</h2>
+    <p>Un système fonctionnel en une session, un tarif de lancement qui ne dure que quelques jours.</p>
+    <a href="https://tally.so/r/Meq5Pl" target="_blank" rel="noopener" class="btn-primary">Je réserve ma place — 29€ →</a>
+  </div>
+</section>
+
+<footer>
+  Optimeo Agency — Vierzon · <span>contact@optimeo-agency.fr</span>
+</footer>
+
+</body>
+</html>
