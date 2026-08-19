@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Optimeo Agency — Automatisation & IA pour TPE, immobilier et conciergeries | Vierzon</title>
-<meta name="description" content="Optimeo Agency accompagne TPE/PME, agents immobiliers et conciergeries dans l'automatisation (Make, n8n, Notion) et l'intégration de l'IA. Basé à Vierzon, missions dans toute la France. Découvrez Scale Up Conciergerie et le Sprint d'été.">
+<meta name="description" content="Optimeo Agency accompagne TPE/PME, agents immobiliers et conciergeries dans l'automatisation (Make, n8n, Notion) et l'intégration de l'IA. Basé à Vierzon, missions dans toute la France. Découvrez Scale Up Conciergerie.">
 <meta name="keywords" content="automatisation, intelligence artificielle, no-code, Make, n8n, TPE PME, conciergerie, agent immobilier mandataire, Vierzon, Centre-Val de Loire, formation IA entreprise">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.optimeo-agency.fr/">
@@ -12,7 +12,7 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Optimeo Agency — Automatisation & IA pour TPE, immobilier et conciergeries">
-<meta property="og:description" content="Automatisation, no-code et IA pour TPE/PME, agents immobiliers et conciergeries. Programme Scale Up Conciergerie et Sprint d'été à tarif de lancement.">
+<meta property="og:description" content="Automatisation, no-code et IA pour TPE/PME, agents immobiliers et conciergeries. Découvrez le programme Scale Up Conciergerie.">
 <meta property="og:url" content="https://www.optimeo-agency.fr/">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:image" content="https://www.optimeo-agency.fr/og-image.jpg">
@@ -42,8 +42,7 @@
   "url": "https://www.optimeo-agency.fr/",
   "sameAs": ["https://www.linkedin.com/company/optimeo-agency"],
   "makesOffer": [
-    { "@type": "Offer", "name": "Scale Up Conciergerie", "price": "800", "priceCurrency": "EUR" },
-    { "@type": "Offer", "name": "Sprint d'été Conciergerie", "price": "29", "priceCurrency": "EUR" }
+    { "@type": "Offer", "name": "Scale Up Conciergerie", "price": "800", "priceCurrency": "EUR" }
   ]
 }
 </script>
@@ -173,25 +172,6 @@ header{
 .flow-arrow{color:rgba(255,255,255,0.3);font-size:16px;}
 .hero-card .caption{font-size:12.5px;color:var(--ink-soft-onDark);margin-top:18px;position:relative;z-index:1;}
 
-/* the sprint sticker — signature element */
-.sprint-sticker{
-  position:absolute;top:-26px;right:-18px;z-index:5;
-  transform:rotate(-7deg);
-  background:var(--coral);color:#fff;
-  padding:16px 20px 18px;
-  border-radius:10px;
-  border:2px dashed rgba(255,255,255,0.55);
-  box-shadow:0 20px 40px -14px rgba(230,67,31,0.55);
-  font-family:'Montserrat',sans-serif;
-  min-width:190px;
-  text-align:center;
-}
-.sprint-sticker .tag-eyebrow{font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;opacity:0.9;}
-.sprint-sticker .tag-title{font-size:19px;font-weight:900;line-height:1.1;margin:4px 0 6px;}
-.sprint-sticker .tag-price{font-size:13px;font-weight:700;}
-.sprint-sticker .tag-price s{opacity:0.65;font-weight:500;margin-right:5px;}
-@media (max-width:960px){.sprint-sticker{position:static;transform:rotate(-3deg);margin:0 auto 24px;width:fit-content;}}
-
 /* ===== SECTION: POUR QUI ===== */
 .audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:52px;}
 @media (max-width:860px){.audience-grid{grid-template-columns:1fr;}}
@@ -242,38 +222,6 @@ header{
 .price-row .period{font-size:13px;color:var(--ink-soft-onDark);}
 .price-alt{font-size:13px;color:var(--ink-soft-onDark);margin-bottom:22px;}
 .guarantee{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink-soft-onDark);margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.12);}
-
-/* ===== SECTION: SPRINT D'ÉTÉ (ticket style) ===== */
-.sprint-section{background:var(--bg);}
-.ticket{
-  background:var(--surface);border-radius:22px;box-shadow:var(--shadow);
-  display:grid;grid-template-columns:1fr 320px;overflow:visible;position:relative;
-}
-@media (max-width:860px){.ticket{grid-template-columns:1fr;}}
-.ticket-main{padding:44px;}
-.ticket-side{
-  background:var(--coral);color:#fff;padding:44px 34px;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
-  border-radius:0 22px 22px 0;position:relative;
-}
-@media (max-width:860px){.ticket-side{border-radius:0 0 22px 22px;}}
-.ticket-side::before{
-  content:"";position:absolute;left:-14px;top:50%;transform:translateY(-50%);
-  width:28px;height:28px;background:var(--bg);border-radius:50%;
-}
-@media (max-width:860px){.ticket-side::before{left:50%;top:-14px;transform:translate(-50%,0);}}
-.ticket-side .old-price{font-size:16px;text-decoration:line-through;opacity:0.65;font-weight:600;}
-.ticket-side .new-price{font-family:'Montserrat',sans-serif;font-size:46px;font-weight:900;line-height:1;margin:6px 0 10px;}
-.ticket-side .deadline{font-size:12.5px;font-weight:700;background:rgba(255,255,255,0.18);padding:6px 12px;border-radius:100px;margin-bottom:20px;}
-.ticket-meta{display:flex;gap:22px;flex-wrap:wrap;margin:22px 0 26px;}
-.ticket-meta .item{font-size:13.5px;}
-.ticket-meta .item b{display:block;font-family:'Montserrat',sans-serif;font-size:15px;color:var(--navy);}
-.ticket-main h2{font-size:clamp(24px,3vw,32px);margin-bottom:14px;}
-.ticket-main p.lead{color:var(--ink-soft);font-size:15.5px;margin-bottom:22px;max-width:520px;}
-.ticket-main ul{margin-bottom:8px;}
-.ticket-main ul li{font-size:14px;color:var(--navy-soft);padding-left:20px;position:relative;margin-bottom:9px;}
-.ticket-main ul li::before{content:"✓";position:absolute;left:0;color:var(--cyan-deep);font-weight:700;}
-.ticket-funnel{font-size:12.5px;color:var(--ink-soft);margin-top:20px;font-style:italic;}
 
 /* ===== SECTION: TPE/PME ===== */
 .tpe-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
@@ -347,7 +295,6 @@ footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 3
     <ul class="nav-links" id="navLinks">
       <li><a href="#pour-qui">Pour qui ?</a></li>
       <li><a href="#scale-up">Conciergeries</a></li>
-      <li><a href="#sprint">Sprint d'été</a></li>
       <li><a href="#tpe-pme">TPE / PME</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -379,11 +326,6 @@ footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 3
         </div>
 
         <div class="hero-visual">
-          <div class="sprint-sticker">
-            <div class="tag-eyebrow">Places limitées</div>
-            <div class="tag-title">Sprint d'été</div>
-            <div class="tag-price"><s>69€</s> 29€</div>
-          </div>
           <div class="hero-card">
             <div class="flow-row">
               <div class="flow-node">📨 <b>Demande</b> reçue</div>
@@ -442,7 +384,6 @@ footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 3
           <ul>
             <li>Programme d'accompagnement 6 mois</li>
             <li>Méthode des 4 leviers de l'automatisation</li>
-            <li>Sprint découverte dès 29€</li>
           </ul>
           <a href="#scale-up" class="card-link">Voir le programme →</a>
         </article>
@@ -498,38 +439,6 @@ footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 3
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2"/></svg>
             Garantie satisfait ou remboursé 30 jours
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= SPRINT D'ÉTÉ ================= -->
-  <section id="sprint" class="sprint-section">
-    <div class="wrap">
-      <p class="eyebrow">Offre de lancement</p>
-      <h2 style="font-size:clamp(26px,3.2vw,36px);max-width:640px;margin-bottom:40px;">Le Sprint d'été — repartez avec un système fonctionnel en 2h</h2>
-
-      <div class="ticket">
-        <div class="ticket-main">
-          <h2>Sprint automatisation conciergerie</h2>
-          <p class="lead">Une session courte et concrète pour construire, en direct, votre premier système d'automatisation : collecte des demandes voyageurs et relance automatique post-séjour.</p>
-          <div class="ticket-meta">
-            <div class="item"><b>Vendredi 24 juillet</b>Date</div>
-            <div class="item"><b>14h – 16h</b>Horaires</div>
-            <div class="item"><b>Visio en direct</b>Format</div>
-          </div>
-          <ul>
-            <li>Cadrage des 3 automatisations qui font gagner le plus de temps</li>
-            <li>Construction guidée d'un formulaire connecté à votre messagerie</li>
-            <li>Repartez avec un workflow actif, pas juste des notes</li>
-          </ul>
-          <p class="ticket-funnel">La suite logique du Sprint pour aller plus loin : Scale Up Conciergerie.</p>
-        </div>
-        <div class="ticket-side">
-          <div class="old-price">69€</div>
-          <div class="new-price">29€</div>
-          <div class="deadline">Tarif valable jusqu'au 17 juillet</div>
-          <a href="https://tally.so/r/9q5PvK" target="_blank" rel="noopener" class="btn" style="background:#fff;color:var(--coral-deep);width:100%;justify-content:center;">Je réserve ma place</a>
         </div>
       </div>
     </div>
@@ -644,7 +553,6 @@ footer{background:var(--navy-deep);color:var(--ink-soft-onDark);padding:64px 0 3
         <ul>
           <li><a href="#pour-qui">Pour qui ?</a></li>
           <li><a href="#scale-up">Scale Up Conciergerie</a></li>
-          <li><a href="#sprint">Sprint d'été</a></li>
           <li><a href="#tpe-pme">TPE / PME</a></li>
         </ul>
       </div>
@@ -681,7 +589,7 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); } });
   }, {threshold:0.15});
-  document.querySelectorAll('.audience-card, .example-card, .ticket, .scaleup-grid').forEach(function(el){
+  document.querySelectorAll('.audience-card, .example-card, .scaleup-grid').forEach(function(el){
     el.classList.add('reveal'); observer.observe(el);
   });
 }
