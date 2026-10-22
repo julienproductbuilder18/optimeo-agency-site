@@ -1,0 +1,933 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<meta name="description" content="Maquette de tableau de bord pour une mairie, par Optimeo Agency.">
+<title>Mairie Connect</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Concept : menu latéral sombre sur bureau, barre d'onglets sur mobile. Cartes blanches sur fond vert-gris froid, accent vert sapin, statuts bleu / ambre / vert. */
+:root{
+  --bg:#EBF2F1; --surface:#FFFFFF; --surface-2:#F3F8F7; --ink:#0B2A2D; --ink-2:#44605D; --ink-3:#5E7678;
+  --line:#D9E5E3; --accent:#0A7A68; --accent-ink:#FFFFFF; --accent-soft:#D6EFE9; --sun:#E9A62B; --sun-soft:#FFF0CF;
+  --prog:#2D6BDB; --prog-soft:#DCE8FC; --wait:#B26D00; --wait-soft:#FCE9C6; --done:#17794B; --done-soft:#D3EFE1; --urgent:#C93A35; --urgent-soft:#FADDDB;
+  --side:#0B2A2D; --side-ink:#BFD8D4; --side-line:#1B4247; --frame:#0B2A2D;
+  --map-land:#E4EFE8; --map-block:#D2E3DA; --map-water:#BFDCEC; --map-road:#FFFFFF; --map-ink:#46635F;
+  --shadow:0 1px 2px rgba(11,42,45,.05),0 8px 24px rgba(11,42,45,.06);
+  --r:16px;
+  --f-display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --f-body:'Figtree','Segoe UI',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#071A1C; --surface:#0E2A2D; --surface-2:#133236; --ink:#E5F1EF; --ink-2:#A3BDBA; --ink-3:#86A19E;
+  --line:#1F4145; --accent:#3CCFB4; --accent-ink:#04201B; --accent-soft:#12403A; --sun:#F2B94B; --sun-soft:#4A3510;
+  --prog:#7BA9FF; --prog-soft:#17325F; --wait:#F2B54E; --wait-soft:#473210; --done:#58D79D; --done-soft:#0F402B; --urgent:#FF8079; --urgent-soft:#4A1C1A;
+  --side:#04100F; --side-ink:#A9C7C3; --side-line:#14302E; --frame:#2C4D51;
+  --map-land:#112F31; --map-block:#173B3C; --map-water:#173F5A; --map-road:#2A4C50; --map-ink:#8FB0AC;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#071A1C; --surface:#0E2A2D; --surface-2:#133236; --ink:#E5F1EF; --ink-2:#A3BDBA; --ink-3:#86A19E;
+  --line:#1F4145; --accent:#3CCFB4; --accent-ink:#04201B; --accent-soft:#12403A; --sun:#F2B94B; --sun-soft:#4A3510;
+  --prog:#7BA9FF; --prog-soft:#17325F; --wait:#F2B54E; --wait-soft:#473210; --done:#58D79D; --done-soft:#0F402B; --urgent:#FF8079; --urgent-soft:#4A1C1A;
+  --side:#04100F; --side-ink:#A9C7C3; --side-line:#14302E; --frame:#2C4D51;
+  --map-land:#112F31; --map-block:#173B3C; --map-water:#173F5A; --map-road:#2A4C50; --map-ink:#8FB0AC;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;letter-spacing:-.015em;text-wrap:balance;font-weight:700}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0;padding:0}
+input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.sm{width:16px;height:16px}.ic.xs{width:14px;height:14px}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.02em}
+.muted{color:var(--ink-2)}.faint{color:var(--ink-3)}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Structure */
+.app{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;background:var(--side);color:var(--side-ink);display:flex;flex-direction:column;gap:20px;padding:22px 16px;overflow:auto;padding-left:max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;gap:12px;align-items:center;padding:0 6px}
+.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(145deg,#12A38B,#0A6B5C);display:grid;place-items:center;color:#fff;flex:none}
+.brand b{display:block;font-family:var(--f-display);font-size:18px;color:#fff;line-height:1.15}
+.brand small{display:block;color:var(--side-ink);font-size:12.5px;opacity:.85}
+.tri{display:flex;height:3px;border-radius:3px;overflow:hidden;margin:0 6px}
+.tri i{flex:1}.tri i:nth-child(1){background:#3157B8}.tri i:nth-child(2){background:#F2F5F5}.tri i:nth-child(3){background:#D8403B}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--side-ink);font-weight:600;text-align:left;width:100%;transition:background .15s}
+.nav button:hover{background:rgba(255,255,255,.06)}
+.nav button[aria-current="page"]{background:rgba(255,255,255,.11);color:#fff}
+.nav .bdg{margin-left:auto;background:var(--sun);color:#2A1D00;border-radius:99px;font-size:12px;font-weight:700;padding:1px 8px;min-width:24px;text-align:center}
+.side .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#7FA19D;padding:0 12px}
+.side-foot{margin-top:auto;border:1px solid var(--side-line);border-radius:14px;padding:14px;font-size:13px;line-height:1.45}
+.side-foot b{color:#fff;display:block;font-family:var(--f-display);font-size:14px}
+.side-foot .tel{font-family:var(--f-mono);color:#fff;font-size:13px;margin-top:6px;display:block}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;display:flex;align-items:center;gap:10px;padding-block:12px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.top .mini{display:none;align-items:center;gap:10px;min-width:0}
+.top .mini .logo{width:36px;height:36px;border-radius:11px}
+.commune{display:flex;flex-direction:column;align-items:flex-start;min-width:0;text-align:left}
+.commune b{font-family:var(--f-display);font-size:16px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.commune small{color:var(--ink-3);font-size:12px}
+.search{position:relative;flex:1;max-width:420px}
+.search input{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 14px 10px 40px}
+.search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+.sp{flex:1}
+.ibtn{position:relative;width:42px;height:42px;border-radius:13px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.ibtn .dot{position:absolute;top:-5px;right:-5px;background:var(--urgent);color:#fff;font-size:11px;font-weight:700;min-width:19px;height:19px;border-radius:99px;display:grid;place-items:center;padding:0 5px;border:2px solid var(--bg)}
+.me{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 5px;border:1px solid var(--line);background:var(--surface);border-radius:99px;font-weight:600;font-size:14px}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12.5px;flex:none;font-family:var(--f-body)}
+.page{padding-block:8px 48px;padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));width:100%;max-width:1360px}
+.vh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:10px 0 20px}
+.vh h1{font-size:32px;line-height:1.1;font-weight:800}
+.vh p{color:var(--ink-2);margin-top:6px;max-width:60ch}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.tabs{display:none}
+
+/* Grille de cartes */
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px;min-width:0}
+.ch{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.ch h3{font-size:17px}
+.ch .sub{color:var(--ink-3);font-size:13px}
+.link{color:var(--accent);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:4px}
+@media (max-width:1180px){.s3,.s4{grid-column:span 6}.s5,.s7,.s8{grid-column:span 12}}
+@media (max-width:899px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .top{padding-left:var(--gl);padding-right:var(--gr)}
+  .top .mini{display:flex}.search,.me #meName{display:none}.me{padding:4px}
+  .page{padding-left:var(--gl);padding-right:var(--gr);padding-bottom:110px}
+  .vh h1{font-size:26px}
+  .tabs{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:35;background:var(--surface);border-top:1px solid var(--line);padding:6px max(6px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px))}
+  .tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--ink-3);padding:6px 2px;border-radius:12px;position:relative}
+  .tabs button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+  .tabs .bdg{position:absolute;top:2px;left:calc(50% + 6px);background:var(--urgent);color:#fff;font-size:10px;min-width:17px;height:17px;border-radius:99px;display:grid;place-items:center;padding:0 4px}
+}
+@media (max-width:640px){.s3,.s4,.s6{grid-column:span 12}.kp{grid-column:span 6!important}.card{padding:16px}}
+
+/* Composants */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 15px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;transition:transform .12s,background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.ok{background:var(--done-soft);color:var(--done);border-color:transparent}
+.btn.no{background:var(--urgent-soft);color:var(--urgent);border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}
+.btn.lg{padding:14px 20px;font-size:15px;border-radius:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:99px;font-size:12px;font-weight:700;white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.p-attente{background:var(--wait-soft);color:var(--wait)}
+.p-en_cours{background:var(--prog-soft);color:var(--prog)}
+.p-termine{background:var(--done-soft);color:var(--done)}
+.p-urgent{background:var(--urgent-soft);color:var(--urgent)}
+.p-neutre{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.p-neutre::before{display:none}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:8px;font-size:12px;font-weight:600;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.new{background:var(--sun);color:#2A1D00;border-radius:6px;font-size:11px;font-weight:800;padding:1px 7px;letter-spacing:.03em;text-transform:uppercase}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px}
+.chip b{font-weight:700;background:var(--surface-2);border-radius:99px;padding:0 8px;font-size:12.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.chip[aria-pressed="true"] b{background:rgba(255,255,255,.18);color:inherit}
+.bar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+
+/* Bandeau d'accueil */
+.hero{position:relative;overflow:hidden;border-radius:22px;color:#fff;padding:26px 28px;background:linear-gradient(120deg,#0A2528 0%,#0D4642 55%,#12705F 100%);min-height:168px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.hero h2{font-size:30px;font-weight:800;line-height:1.12;max-width:20ch;color:#fff}
+.hero p{max-width:52ch;color:#CFE6E2;font-size:15.5px}
+.hero .date{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8EC9BE;font-weight:700}
+.hero .acts{position:relative;z-index:1}
+.hero .btn{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff}
+.hero .btn.pri{background:#fff;color:#0A2E2B;border-color:#fff}
+.hero svg.sky{position:absolute;right:-10px;bottom:-4px;height:150%;max-height:250px;opacity:.9;pointer-events:none}
+.hero > *:not(svg){position:relative;z-index:1}
+
+/* Indicateurs */
+.kpi{display:flex;flex-direction:column;gap:10px}
+.kpi .top2{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ink-2);font-weight:600;font-size:14px}
+.kic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center}
+.t-wait{background:var(--wait-soft);color:var(--wait)}.t-prog{background:var(--prog-soft);color:var(--prog)}.t-done{background:var(--done-soft);color:var(--done)}.t-acc{background:var(--accent-soft);color:var(--accent)}.t-urg{background:var(--urgent-soft);color:var(--urgent)}
+.kpi .big{font-family:var(--f-display);font-size:38px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .big small{font-size:17px;font-weight:600;color:var(--ink-3);letter-spacing:0}
+.kpi .dl{font-size:13px;color:var(--ink-2);display:flex;gap:6px;align-items:center}
+.good{color:var(--done);font-weight:700}.bad{color:var(--urgent);font-weight:700}
+
+/* Graphiques */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--f-body);font-size:11px;fill:var(--ink-3)}
+.chart .gl{stroke:var(--line);stroke-width:1}
+.chart .ln{fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.donut{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donut svg{width:150px;height:150px;flex:none}
+.donut .cen{font-family:var(--f-display);font-weight:800;font-size:26px;fill:var(--ink)}
+.donut .cs{font-size:10px;fill:var(--ink-3)}
+.dl-list{display:flex;flex-direction:column;gap:10px;flex:1;min-width:150px}
+.dl-list div{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.dl-list b{font-variant-numeric:tabular-nums}
+
+/* Listes de demandes */
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:40px minmax(0,1fr) auto auto 18px;gap:14px;align-items:center;padding:13px 6px;border-top:1px solid var(--line);text-align:left;width:100%;border-radius:10px;transition:background .15s}
+.row:first-child{border-top:0}
+.row:hover{background:var(--surface-2)}
+.row .ri{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.row .tt{font-weight:600;line-height:1.3;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row .mt{font-size:13px;color:var(--ink-3);margin-top:2px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row .chev{color:var(--ink-3)}
+.row .mob{display:none}
+@media (max-width:700px){.row{grid-template-columns:40px minmax(0,1fr) 18px}.row .svc,.row .pl{display:none}.row .mob{display:inline-flex}}
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.tools .search{max-width:340px;min-width:200px}
+.tools select{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px}
+.view-sw{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px}
+.view-sw button{display:flex;align-items:center;gap:6px;padding:7px 11px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--ink-2)}
+.view-sw button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.kan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:900px){.kan{grid-template-columns:minmax(0,1fr)}}
+.kcol{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:10px;min-height:120px}
+.kcol h4{font-size:15px;display:flex;align-items:center;justify-content:space-between;padding:2px 4px 4px}
+.kcard{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:13px;text-align:left;display:flex;flex-direction:column;gap:8px;width:100%;box-shadow:0 1px 2px rgba(11,42,45,.04);transition:transform .15s,border-color .15s}
+.kcard:hover{transform:translateY(-2px);border-color:var(--accent)}
+.kcard b{font-weight:600;line-height:1.3}
+.kcard .mt{font-size:12.5px;color:var(--ink-3);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.empty{padding:26px 10px;text-align:center;color:var(--ink-3);font-size:14px}
+
+/* Carte de la commune */
+.map{width:100%;height:auto;display:block;border-radius:14px;border:1px solid var(--line)}
+.m-land{fill:var(--map-land)}.m-block{fill:var(--map-block)}.m-water{fill:var(--map-water)}
+.m-road{fill:none;stroke:var(--map-road);stroke-linecap:round;stroke-linejoin:round}
+.m-lbl{font-size:9.5px;fill:var(--map-ink);font-family:var(--f-body);font-weight:600;letter-spacing:.02em}
+.m-pin{cursor:pointer}
+.m-pin .halo{transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.55}100%{transform:scale(2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.m-pin .halo{animation:none;opacity:.25}*{transition:none!important}}
+
+/* Avis */
+.score{display:flex;align-items:baseline;gap:8px}
+.score b{font-family:var(--f-display);font-size:46px;font-weight:800;line-height:1}
+.stars{display:inline-flex;gap:2px;color:var(--sun)}
+.stars .ic{fill:currentColor;stroke:currentColor;width:16px;height:16px}
+.stars .off{color:var(--line)}
+.dist{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.dist div{display:grid;grid-template-columns:22px minmax(0,1fr) 30px;gap:8px;align-items:center;font-size:12.5px;color:var(--ink-2)}
+.dist .bar{height:7px}.dist .bar i{background:var(--sun)}
+.quote{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--surface-2);font-size:14px;color:var(--ink-2);line-height:1.45}
+
+/* Échéances */
+.ev{display:flex;gap:12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.ev:first-child{border-top:0}
+.ev .dt{width:48px;text-align:center;border-radius:12px;background:var(--accent-soft);color:var(--accent);padding:5px 0;flex:none}
+.ev .dt b{display:block;font-family:var(--f-display);font-size:19px;line-height:1.1}
+.ev .dt small{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.ev b{font-weight:600;display:block;line-height:1.3}.ev span{font-size:13px;color:var(--ink-3)}
+
+/* Services */
+.svcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.svc-card{text-align:left;display:flex;flex-direction:column;gap:14px;transition:transform .15s,border-color .15s;width:100%}
+.svc-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.svc-top{display:flex;gap:12px;align-items:center}
+.svc-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none}
+.svc-top b{font-family:var(--f-display);font-size:17px;line-height:1.2;display:block}
+.svc-top span{font-size:13px;color:var(--ink-3)}
+.stack{display:flex}.stack .av{margin-left:-8px;border:2px solid var(--surface);width:30px;height:30px;font-size:11.5px}.stack .av:first-child{margin-left:0}
+.mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mini-stats div{background:var(--surface-2);border-radius:11px;padding:9px 10px}
+.mini-stats b{font-family:var(--f-display);font-size:20px;display:block;line-height:1.1}
+.mini-stats span{font-size:12px;color:var(--ink-3)}
+.dot-s{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+
+/* Agents */
+.acard{display:flex;flex-direction:column;gap:12px}
+.ahead{display:flex;gap:12px;align-items:center}
+.ahead .av{width:42px;height:42px;font-size:14px}
+.ahead b{display:block;line-height:1.2}.ahead span{font-size:13px;color:var(--ink-3)}
+.ahead .pill{margin-left:auto}
+.adet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.adet div{background:var(--surface-2);border-radius:11px;padding:8px 10px}
+.adet small{display:block;font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.adet span{font-weight:600;font-size:14px}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.gantt{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+.gt{min-width:860px;display:grid;grid-template-columns:150px repeat(35,minmax(19px,1fr))}
+.gt > *{border-top:1px solid var(--line);min-height:34px}
+.gt .h{border-top:0;font-size:10.5px;text-align:center;color:var(--ink-3);padding:6px 0;line-height:1.2}
+.gt .h.we,.gt .c.we{background:var(--surface-2)}
+.gt .h.td{color:var(--accent);font-weight:800}
+.gt .nm{padding:6px 10px;font-size:13px;font-weight:600;display:flex;align-items:center;position:sticky;left:0;background:var(--surface);z-index:2;border-right:1px solid var(--line)}
+.gt .c{border-left:1px solid color-mix(in srgb,var(--line) 55%,transparent)}
+.gt .b{margin:6px 1px;border-radius:7px;font-size:11px;font-weight:700;padding:0 7px;display:flex;align-items:center;overflow:hidden;white-space:nowrap;z-index:1}
+.b-attente{background:repeating-linear-gradient(135deg,var(--wait-soft) 0 6px,color-mix(in srgb,var(--wait-soft) 55%,var(--surface)) 6px 12px);color:var(--wait);border:1px dashed var(--wait)}
+.b-en_cours{background:var(--prog-soft);color:var(--prog)}
+.b-termine{background:var(--done-soft);color:var(--done)}
+.gt .tdl{grid-row:1/-1;border-left:2px solid var(--accent);z-index:1;pointer-events:none;border-top:0;min-height:0}
+.gt .c.td{background:var(--accent-soft)}
+
+/* Panneau latéral */
+.ovl{position:fixed;inset:0;background:rgba(4,18,20,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:60;opacity:0;pointer-events:none;transition:opacity .2s}
+.ovl.on{opacity:1;pointer-events:auto}
+.drw{position:fixed;top:0;right:0;bottom:0;width:min(540px,100vw);background:var(--surface);z-index:61;transform:translateX(104%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.25)}
+.drw.on{transform:none}
+.dh{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:calc(18px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) 14px 22px;border-bottom:1px solid var(--line)}
+.dh h3{font-size:20px;line-height:1.2;margin-top:6px}
+.db{padding:18px max(22px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) 22px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:20px}
+.sec h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-bottom:10px;font-family:var(--f-body);font-weight:700}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kv div{background:var(--surface-2);border-radius:12px;padding:10px 12px;min-width:0}
+.kv small{display:block;font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.kv span{font-weight:600;overflow-wrap:anywhere}
+.msg{background:var(--surface-2);border-radius:14px;padding:14px;line-height:1.55}
+.segs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface-2);padding:4px;border-radius:14px}
+.segs button{padding:10px 6px;border-radius:11px;font-weight:700;font-size:13.5px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:6px}
+.segs button[aria-pressed="true"]{background:var(--surface);box-shadow:var(--shadow);color:var(--ink)}
+.segs button[data-s="attente"][aria-pressed="true"]{color:var(--wait)}
+.segs button[data-s="en_cours"][aria-pressed="true"]{color:var(--prog)}
+.segs button[data-s="termine"][aria-pressed="true"]{color:var(--done)}
+.tl{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:14px 1fr;gap:12px;padding-bottom:16px;position:relative}
+.tl li::before{content:"";position:absolute;left:6px;top:14px;bottom:-2px;width:2px;background:var(--line)}
+.tl li:last-child::before{display:none}
+.tl i{width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--accent-soft);margin-top:4px;box-sizing:content-box;width:8px;height:8px}
+.tl b{font-weight:600;display:block;line-height:1.35}.tl small{color:var(--ink-3);font-size:12.5px}
+.nitem{display:grid;grid-template-columns:40px minmax(0,1fr) 10px;gap:12px;align-items:start;padding:12px;border-radius:14px;text-align:left;width:100%;transition:background .15s}
+.nitem:hover{background:var(--surface-2)}
+.nitem.un{background:color-mix(in srgb,var(--accent-soft) 55%,transparent)}
+.nitem .ri{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.nitem b{font-weight:600;line-height:1.35;display:block}.nitem small{color:var(--ink-3);font-size:12.5px}
+.nitem .ud{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:8px}
+.grp{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:700;padding:6px 4px}
+.tg{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:14.5px}
+.sw{position:relative;width:44px;height:26px;border-radius:99px;background:var(--line);flex:none;transition:background .2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.sw[aria-checked="true"]{background:var(--accent)}.sw[aria-checked="true"]::after{transform:translateX(18px)}
+
+/* Alerte */
+.toast{position:fixed;z-index:80;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--surface);padding:13px 18px;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.3);display:flex;gap:12px;align-items:center;opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.2,.8,.2,1);max-width:min(92vw,520px);font-weight:600;font-size:14.5px}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast .ic{color:var(--accent);flex:none}
+.toast button{margin-left:6px;color:var(--accent);font-weight:700;white-space:nowrap}
+@media (max-width:899px){.toast{bottom:calc(86px + env(safe-area-inset-bottom,0px))}}
+
+/* Portail citoyen */
+.portal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:40px;align-items:start}
+@media (max-width:1000px){.portal{grid-template-columns:minmax(0,1fr)}}
+.steps{display:flex;flex-direction:column;gap:16px;margin-top:18px}
+.steps div{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:start}
+.steps .kic{width:42px;height:42px}
+.steps b{display:block;font-weight:700;margin-bottom:2px}
+.steps p{color:var(--ink-2);font-size:14.5px}
+.urlbox{margin-top:20px;display:flex;align-items:center;gap:10px;background:var(--surface);border:1px dashed var(--accent);border-radius:14px;padding:12px 14px;font-weight:600;overflow-wrap:anywhere}
+.phone{border:10px solid var(--frame);border-radius:44px;background:var(--surface);overflow:hidden;box-shadow:0 30px 60px -20px rgba(11,42,45,.45);width:100%;max-width:440px;margin-inline:auto}
+.ph-top{background:linear-gradient(135deg,#0A2F2C,#0F5C50);color:#fff;padding:26px 22px 22px}
+.ph-top small{display:block;letter-spacing:.09em;text-transform:uppercase;font-size:11px;color:#9ED7CB;font-weight:700}
+.ph-top h3{font-size:23px;margin:4px 0 6px;color:#fff}
+.ph-top p{font-size:14px;color:#CBE7E2}
+.ph-body{padding:20px 20px 24px;display:flex;flex-direction:column;gap:16px}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label,.fld .lb{font-weight:700;font-size:13.5px}
+.fld input[type=text],.fld input[type=email],.fld select,.fld textarea{width:100%;border:1.5px solid var(--line);background:var(--surface-2);border-radius:13px;padding:12px 13px;min-width:0}
+.fld textarea{min-height:104px;resize:vertical}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.fld .err{color:var(--urgent);font-size:12.5px;font-weight:600;display:none}
+.fld.bad .err{display:block}.fld.bad input,.fld.bad textarea,.fld.bad select{border-color:var(--urgent)}
+.tsel{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tsel button{border:1.5px solid var(--line);background:var(--surface-2);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;font-weight:700;font-size:13.5px;text-align:left}
+.tsel button .ic{color:var(--accent)}
+.tsel button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
+.starin{display:flex;gap:4px}
+.starin button{color:var(--line);padding:2px}
+.starin button .ic{width:34px;height:34px;fill:currentColor;stroke:currentColor}
+.starin button.on{color:var(--sun)}
+.upl{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:13px;padding:12px;background:var(--surface-2);font-size:14px;color:var(--ink-2);cursor:pointer}
+.upl img{width:46px;height:46px;border-radius:10px;object-fit:cover}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-2)}
+.chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex:none}
+.done-box{text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;padding:14px 4px}
+.done-box .okc{width:72px;height:72px;border-radius:50%;background:var(--done-soft);color:var(--done);display:grid;place-items:center}
+.done-box .okc .ic{width:36px;height:36px;stroke-width:2.4}
+.ref{font-family:var(--f-mono);font-size:18px;background:var(--surface-2);border-radius:12px;padding:8px 16px;letter-spacing:.05em}
+@media (max-width:640px){.phone{border:0;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--line)}}
+.note-demo{margin-top:22px;padding:14px 16px;border-radius:14px;background:var(--sun-soft);color:var(--ink);font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.note-demo .ic{color:var(--wait);margin-top:2px}
+.att{display:flex;flex-direction:column;gap:10px}
+.attr{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border-radius:14px;background:var(--surface-2);text-align:left;width:100%}
+.attr .ri{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.attr b{font-weight:600;line-height:1.3;display:block}.attr small{color:var(--ink-3);font-size:12.5px}
+@media (max-width:640px){.attr{grid-template-columns:40px minmax(0,1fr)}.attr .pill{display:none}}
+.pers .fld{margin-bottom:14px}
+
+
+.ld{display:grid;grid-template-columns:34px minmax(0,1fr) 28px;gap:12px;align-items:center;padding:8px 0;text-align:left;width:100%;border-radius:10px}
+.ld:hover .ldm b{color:var(--accent)}
+.ldm{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ldm b{font-weight:600;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ld .svc-ic{width:34px;height:34px;border-radius:10px}
+.svc-card{cursor:pointer}
+.ld > b{text-align:right}
+@media (max-width:640px){.hero{padding:22px 20px}.hero h2{font-size:26px}.hero svg.sky{opacity:.55}.vh{margin-top:4px}.tools .search{max-width:none;flex:1 1 100%}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V10M9 21V10M15 21V10M19 21V10"/><path d="M12 3L2 9h20z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20a15 15 0 0 1 0-20z"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></symbol>
+<symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></symbol>
+<symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 22v-6"/><path d="M12 16a5 5 0 0 0 5-5c0-1-.3-1.9-.8-2.7A4 4 0 0 0 12 2a4 4 0 0 0-4.2 5.3A5 5 0 0 0 12 16z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V22h16"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-cols" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4z"/><path d="M8 2v16M16 6v16"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="M12 14l4-4"/><path d="M3.3 17a10 10 0 1 1 17.4 0"/></symbol>
+</svg>
+
+<div class="app">
+  <aside class="side" aria-label="Navigation principale">
+    <div class="brand">
+      <div class="logo"><svg class="ic"><use href="#i-building"/></svg></div>
+      <div><b>Mairie Connect</b><small id="sideCommune">Mairie</small></div>
+    </div>
+    <div class="tri" aria-hidden="true"><i></i><i></i><i></i></div>
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <div class="side-foot">
+      <b>Maquette Optimeo Agency</b>
+      Un outil sur mesure, relié à vos outils actuels.
+      <span class="tel">07 49 21 29 30</span>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <div class="mini">
+        <div class="logo"><svg class="ic"><use href="#i-building"/></svg></div>
+        <button class="commune" data-a="perso" aria-label="Personnaliser la démonstration"><b id="topCommune">Mairie</b><small>Pilotage du maire</small></button>
+      </div>
+      <label class="search"><span class="sr">Rechercher une demande</span><svg class="ic"><use href="#i-search"/></svg><input id="gsearch" type="search" placeholder="Rechercher une demande, un habitant, une rue" autocomplete="off"></label>
+      <div class="sp"></div>
+      <button class="ibtn" data-a="theme" id="themeBtn" aria-label="Changer de thème"><svg class="ic"><use href="#i-moon"/></svg></button>
+      <button class="ibtn" data-a="notifs" id="bellBtn" aria-label="Notifications"><svg class="ic"><use href="#i-bell"/></svg><span class="dot" id="bellDot" hidden>0</span></button>
+      <button class="me" data-a="perso" aria-label="Personnaliser la démonstration"><span class="av" style="background:linear-gradient(145deg,#12A38B,#0A6B5C)" id="meAv">M</span><span id="meName">M. le Maire</span></button>
+    </header>
+    <main class="page" id="view" tabindex="-1"></main>
+  </div>
+</div>
+<nav class="tabs" id="tabs" aria-label="Navigation mobile"></nav>
+<div class="ovl" id="ovl" data-a="close"></div>
+<aside class="drw" id="drw" role="dialog" aria-modal="true" aria-label="Détail" aria-hidden="true"></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ---------- Données de démonstration (fictives) ---------- */
+const NOW0=new Date('2026-10-22T11:50:00'),T0=Date.now();
+const now=()=>new Date(NOW0.getTime()+Date.now()-T0);
+const D=s=>new Date(s);
+const SL={attente:'En attente',en_cours:'En cours',termine:'Terminé'};
+const ORDER=['attente','en_cours','termine'];
+
+const SERVICES=[
+ {id:'secretariat',nom:'Secrétariat & état civil',ic:'file',col:'#0A7A68',resp:'sandrine',desc:'Accueil, actes, élections, cimetière',delai:'1,2 j'},
+ {id:'technique',nom:'Services techniques',ic:'tool',col:'#2D6BDB',resp:'patrick',desc:'Voirie, bâtiments, éclairage public',delai:'3,1 j'},
+ {id:'espaces',nom:'Espaces verts & propreté',ic:'tree',col:'#2E8B4F',resp:'thierry',desc:'Entretien, déchets, dépôts sauvages',delai:'2,4 j'},
+ {id:'ecole',nom:'École & périscolaire',ic:'book',col:'#C2681A',resp:'nadia',desc:'Cantine, garderie, accompagnement',delai:'1,0 j'},
+ {id:'urbanisme',nom:'Urbanisme',ic:'building',col:'#7A4FD0',resp:'aurelie',desc:'Permis, déclarations préalables',delai:'4,6 j'},
+ {id:'vie',nom:'Vie locale & salles',ic:'cal',col:'#C8456B',resp:'emilie',desc:'Associations, salles, événements',delai:'1,9 j'},
+ {id:'securite',nom:'Sécurité & tranquillité',ic:'shield',col:'#33505A',resp:'didier',desc:'Garde champêtre, stationnement',delai:'2,2 j'}
+];
+const AGENTS=[
+ {id:'sandrine',nom:'Sandrine Moreau',poste:'Secrétaire de mairie',svc:'secretariat',solde:14,col:'#0A7A68'},
+ {id:'laurence',nom:'Laurence Petit',poste:'Agent d\'état civil',svc:'secretariat',solde:9,col:'#C8456B'},
+ {id:'patrick',nom:'Patrick Lemaire',poste:'Responsable technique',svc:'technique',solde:18,col:'#2D6BDB'},
+ {id:'karim',nom:'Karim Benali',poste:'Agent technique',svc:'technique',solde:21,col:'#33505A'},
+ {id:'thierry',nom:'Thierry Dupuis',poste:'Chef d\'équipe espaces verts',svc:'espaces',solde:12,col:'#2E8B4F'},
+ {id:'bruno',nom:'Bruno Faure',poste:'Agent espaces verts',svc:'espaces',solde:16,col:'#7A4FD0'},
+ {id:'nadia',nom:'Nadia Roux',poste:'ATSEM',svc:'ecole',solde:7,col:'#C2681A'},
+ {id:'melanie',nom:'Mélanie Girard',poste:'Animatrice périscolaire',svc:'ecole',solde:11,col:'#B8467F'},
+ {id:'aurelie',nom:'Aurélie Chevalier',poste:'Instructrice urbanisme',svc:'urbanisme',solde:13,col:'#4B7BD1'},
+ {id:'emilie',nom:'Émilie Blanc',poste:'Chargée de communication',svc:'vie',solde:10,col:'#B25A00'},
+ {id:'didier',nom:'Didier Garnier',poste:'Garde champêtre',svc:'securite',solde:15,col:'#44655F'}
+];
+const svc=id=>SERVICES.find(s=>s.id===id);
+const agent=id=>AGENTS.find(a=>a.id===id);
+
+const TYPES={signalement:{l:'Signalement',ic:'alert',t:'t-urg'},demande:{l:'Demande',ic:'file',t:'t-prog'},avis:{l:'Avis',ic:'star',t:'t-wait'},suggestion:{l:'Idée',ic:'bulb',t:'t-acc'},question:{l:'Question',ic:'chat',t:'t-acc'}};
+
+const R=(id,titre,type,sv,statut,prio,nom,lieu,ts,msg,ag,x,y,extra)=>Object.assign({id,titre,type,svc:sv,statut,prio,nom,lieu,ts,msg,agent:ag,x,y,tl:[[ts,'Demande reçue via le portail citoyen']],nouveau:false},extra||{});
+const CITOYENS=[
+ R('DC-2058','Nid-de-poule dangereux devant l\'arrêt de bus','signalement','technique','attente','urgente','M. Dubois','Rue des Tilleuls','2026-10-22T08:12','Un trou profond s\'est formé sur la chaussée, deux cyclistes ont failli tomber ce matin. Merci d\'intervenir rapidement.','karim',28,44,{nouveau:true}),
+ R('DC-2057','Lampadaire éteint depuis 9 jours','signalement','technique','en_cours','normale','Mme Lefèvre','Rue de la Gare','2026-10-13T18:40','Le lampadaire au coin de la rue de la Gare ne s\'allume plus, la rue est très sombre le soir.','karim',63,30,{tl:[['2026-10-13T18:40','Demande reçue via le portail citoyen'],['2026-10-14T09:05','Transmise aux services techniques'],['2026-10-16T14:20','Commande de l\'ampoule en cours']]}),
+ R('DC-2056','Demande d\'acte de naissance','demande','secretariat','en_cours','normale','Mme Garcia','En ligne','2026-10-21T16:02','Je souhaite obtenir une copie intégrale de mon acte de naissance pour un dossier de retraite.','laurence',null,null,{tl:[['2026-10-21T16:02','Demande reçue via le portail citoyen'],['2026-10-22T08:30','Prise en charge par l\'état civil']]}),
+ R('DC-2055','Dépôt sauvage au bout du chemin du Moulin','signalement','espaces','attente','urgente','Anonyme','Chemin du Moulin','2026-10-20T10:25','Des gravats et un matelas ont été déposés près de la rivière.','thierry',14,72),
+ R('DC-2054','Inscription cantine pour novembre','demande','ecole','termine','normale','M. Lambert','En ligne','2026-10-20T07:50','Merci d\'inscrire ma fille à la cantine les lundis et jeudis.','nadia',null,null,{tl:[['2026-10-20T07:50','Demande reçue via le portail citoyen'],['2026-10-20T11:15','Inscription validée, confirmation envoyée']]}),
+ R('DC-2053','Déclaration préalable : pose d\'une clôture','demande','urbanisme','en_cours','normale','M. et Mme Roche','Impasse des Lilas','2026-10-19T15:10','Nous souhaitons poser une clôture de 1,60 m en limite de propriété.','aurelie',null,null,{tl:[['2026-10-19T15:10','Dossier déposé'],['2026-10-20T10:00','Dossier déclaré complet'],['2026-10-21T09:30','Instruction en cours (délai : 1 mois)']]}),
+ R('DC-2052','Réservation de la salle des fêtes le 14 décembre','demande','vie','attente','normale','Association Les Boules du Cher','Salle des fêtes','2026-10-19T09:35','Nous voudrions réserver la salle pour notre goûter de fin d\'année (80 personnes).','emilie',null,null),
+ R('DC-2051','Aboiements répétés la nuit','signalement','securite','attente','normale','Mme Fontaine','Route de Vierzon','2026-10-18T22:14','Un chien aboie toute la nuit depuis une semaine, plusieurs voisins sont gênés.','didier',78,62),
+ R('DC-2050','Haie qui déborde sur le trottoir','signalement','espaces','en_cours','normale','M. Perrin','Place de l\'Église','2026-10-17T11:30','La haie d\'un riverain oblige les poussettes à passer sur la route.','bruno',48,52,{tl:[['2026-10-17T11:30','Demande reçue via le portail citoyen'],['2026-10-18T08:40','Courrier au riverain préparé'],['2026-10-20T16:00','Intervention de l\'équipe prévue la semaine prochaine']]}),
+ R('DC-2049','Très content du nouveau marché du samedi','avis','vie','termine','normale','Mme Bernard','Place de l\'Église','2026-10-17T09:05','Bravo pour l\'initiative, il y a du monde et de bons produits locaux.','emilie',null,null,{note:5,tl:[['2026-10-17T09:05','Avis reçu'],['2026-10-17T14:00','Merci envoyé à l\'habitante']]}),
+ R('DC-2048','Un banc de plus près du terrain de jeux','suggestion','espaces','attente','normale','Mme Aubry','Terrain de jeux','2026-10-16T17:45','Les parents n\'ont nulle part où s\'asseoir pendant que les enfants jouent.','thierry',36,22),
+ R('DC-2047','Vitesse excessive route de Bourges','signalement','securite','en_cours','normale','M. Colin','Route de Bourges','2026-10-15T08:20','Beaucoup de véhicules dépassent largement les 50 km/h à l\'entrée du bourg.','didier',86,36,{tl:[['2026-10-15T08:20','Demande reçue via le portail citoyen'],['2026-10-16T10:10','Comptage de vitesse programmé'],['2026-10-19T09:00','Radar pédagogique installé']]}),
+ R('DC-2046','Inscription sur les listes électorales','demande','secretariat','termine','normale','Mme Haddad','En ligne','2026-10-14T13:00','Je viens d\'emménager dans la commune.','sandrine',null,null,{tl:[['2026-10-14T13:00','Demande reçue via le portail citoyen'],['2026-10-15T10:20','Inscription enregistrée']]}),
+ R('DC-2045','Fuite d\'eau sur le trottoir','signalement','technique','termine','urgente','M. Marchand','Avenue du 8 Mai 1945','2026-10-12T07:45','De l\'eau coule en continu depuis le regard, le trottoir est inondé.','patrick',55,78,{tl:[['2026-10-12T07:45','Demande reçue via le portail citoyen'],['2026-10-12T08:20','Transmise au gestionnaire du réseau'],['2026-10-14T16:30','Réparation terminée']]}),
+ R('DC-2044','Accueil de la mairie très agréable','avis','secretariat','termine','normale','M. Girard','Mairie','2026-10-11T12:10','Rapide et efficace pour mon dossier de recensement.','sandrine',null,null,{note:4}),
+ R('DC-2043','Horaires de la déchetterie ?','question','espaces','termine','normale','Mme Vidal','En ligne','2026-10-09T18:30','Pouvez-vous me rappeler les horaires d\'ouverture ?','bruno',null,null)
+];
+const RATINGS={5:71,4:34,3:12,2:5,1:4};
+
+const A=(id,ag,type,detail,debut,fin,jours,statut,issue,ts)=>({id,agent:ag,type,detail,debut,fin,jours,statut,issue,ts});
+const DEM_AGENTS=[
+ A('AG-0318','karim','Congés payés','Vacances de la Toussaint','2026-11-02','2026-11-06',5,'attente',null,'2026-10-21T17:20'),
+ A('AG-0317','nadia','Absence exceptionnelle','Événement familial','2026-10-28','2026-10-28',1,'attente',null,'2026-10-21T10:05'),
+ A('AG-0316','thierry','Formation','Habilitation CACES, centre de formation de Bourges','2026-11-17','2026-11-18',2,'attente',null,'2026-10-20T14:40'),
+ A('AG-0315','bruno','Congés payés','Congés de novembre','2026-11-16','2026-11-20',5,'attente',null,'2026-10-19T09:15'),
+ A('AG-0314','melanie','Matériel','Tablette pour les activités périscolaires (budget estimé 280 €)',null,null,0,'attente',null,'2026-10-18T16:00'),
+ A('AG-0313','laurence','Congés payés','Congés d\'automne','2026-10-26','2026-10-30',5,'en_cours','accorde','2026-10-10T11:00'),
+ A('AG-0312','emilie','Formation','Communication numérique pour les collectivités','2026-11-12','2026-11-12',1,'en_cours','accorde','2026-10-08T15:30'),
+ A('AG-0311','patrick','Heures supplémentaires','Intervention fuite d\'eau du 12 octobre, 6 h','2026-10-12','2026-10-12',0,'en_cours','accorde','2026-10-14T08:50'),
+ A('AG-0310','sandrine','Congés payés','Fêtes de fin d\'année','2026-12-21','2026-12-24',4,'en_cours','accorde','2026-10-05T09:00'),
+ A('AG-0309','aurelie','Attestation','Attestation employeur pour dossier bancaire',null,null,0,'termine','accorde','2026-10-02T10:30'),
+ A('AG-0308','didier','Récupération','Récupération d\'horaires le 30 octobre','2026-10-30','2026-10-30',1,'termine','refuse','2026-10-01T14:10')
+];
+const POOL=[
+ ['karim','Congés payés','Du 23 au 27 novembre','2026-11-23','2026-11-27',5],
+ ['sandrine','Formation','Formation sur le nouveau logiciel d\'état civil','2026-11-19','2026-11-19',1],
+ ['bruno','Matériel','Gants et vêtements de travail d\'hiver',null,null,0],
+ ['aurelie','Absence exceptionnelle','Rendez-vous administratif','2026-11-04','2026-11-04',1],
+ ['didier','Heures supplémentaires','Surveillance de la fête du village, 5 h','2026-10-17','2026-10-17',0]
+];
+
+const N=(id,ic,tone,txt,ts,lu,go)=>({id,ic,tone,txt,ts,lu,go});
+const NOTIFS=[
+ N('n1','alert','t-urg','Nouveau signalement urgent : nid-de-poule rue des Tilleuls','2026-10-22T08:12',false,['dem','DC-2058']),
+ N('n2','users','t-wait','Karim Benali demande 5 jours de congés (2 au 6 novembre)','2026-10-21T17:20',false,['agents','AG-0318']),
+ N('n3','clock','t-urg','Lampadaire rue de la Gare : 9 jours sans clôture','2026-10-22T07:00',false,['dem','DC-2057']),
+ N('n4','users','t-wait','Thierry Dupuis demande une formation CACES','2026-10-20T14:40',false,['agents','AG-0316']),
+ N('n5','star','t-wait','Nouvel avis citoyen (5 sur 5) : le marché du samedi','2026-10-17T09:05',true,['dem','DC-2049']),
+ N('n6','cal','t-acc','Demande de réservation de la salle des fêtes le 14 décembre','2026-10-19T09:35',true,['dem','DC-2052']),
+ N('n7','trend','t-done','Le bilan de la semaine est prêt : 9 demandes reçues, 6 traitées','2026-10-19T07:00',true,['dash'])
+];
+const ALERTES=[
+ {k:'urg',l:'Alerte immédiate pour les signalements urgents',on:true},
+ {k:'agt',l:'Prévenir quand un agent dépose une demande',on:true},
+ {k:'mail',l:'Résumé du matin par e-mail',on:false},
+ {k:'old',l:'Rappel si une demande reste sans réponse 7 jours',on:true}
+];
+const WEEKS=[32,33,34,35,36,37,38,39,40,41,42,43];
+const RECUES=[6,8,7,10,9,7,11,9,10,8,8,9];
+const TRAITEES=[5,8,6,9,9,7,10,9,9,8,7,6];
+const ECHEANCES=[
+ {j:'06',m:'nov.',t:'Conseil municipal',l:'Salle du conseil, 18 h 30'},
+ {j:'11',m:'nov.',t:'Cérémonie du 11 Novembre',l:'Monument aux morts, 11 h'},
+ {j:'14',m:'nov.',t:'Commission travaux',l:'Voirie et plan de salage'},
+ {j:'28',m:'nov.',t:'Orientations budgétaires 2027',l:'Préparation avec le secrétariat'},
+ {j:'13',m:'déc.',t:'Repas des aînés',l:'Salle des fêtes, 12 h'}
+];
+const POTENTIEL=['Voirie','Éclairage','Propreté','Urbanisme','État civil','École','Salles'];
+/* ---------- État et petits outils ---------- */
+const S={view:'dash',dem:{f:'tous',s:'tous',q:'',mode:'liste'},ag:{f:'attente'},drawer:null,reply:'',sent:null,commune:"Val-d'Yèvre",maire:'',cit:2058,agn:318,
+ form:{type:'signalement',theme:'technique',msg:'',lieu:'',nom:'',mail:'',note:0,photo:null,rgpd:false,errs:{}}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ic=(n,c)=>`<svg class="ic ${c||''}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const fr=(n,d)=>Number(n).toFixed(d==null?1:d).replace('.',',');
+const fmtD=(s,o)=>D(s).toLocaleDateString('fr-FR',o||{day:'numeric',month:'short'});
+const fmtH=s=>D(s).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+function rel(s){const m=Math.round((now()-D(s))/6e4);if(m<1)return "à l'instant";if(m<60)return `il y a ${m} min`;const h=Math.round(m/60);if(h<24)return `il y a ${h} h`;const j=Math.floor(m/1440);if(j===1)return 'hier';return `il y a ${j} j`}
+const ageJ=r=>Math.floor((now()-D(r.ts))/864e5);
+const ini=n=>n.split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+const avH=a=>`<span class="av" style="background:${a.col}" title="${esc(a.nom)}">${esc(ini(a.nom))}</span>`;
+const pill=s=>`<span class="pill p-${s}">${SL[s]}</span>`;
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const openCit=()=>CITOYENS.filter(r=>r.statut!=='termine');
+const nAttCit=()=>CITOYENS.filter(r=>r.statut==='attente').length;
+const nAttAg=()=>DEM_AGENTS.filter(r=>r.statut==='attente').length;
+const nbAvis=()=>Object.values(RATINGS).reduce((a,b)=>a+b,0);
+const moyAvis=()=>Object.entries(RATINGS).reduce((a,[k,v])=>a+k*v,0)/nbAvis();
+const unread=()=>NOTIFS.filter(n=>!n.lu).length;
+const STCOL={attente:'var(--wait)',en_cours:'var(--prog)',termine:'var(--done)'};
+const stars=(n)=>`<span class="stars" aria-label="${n} sur 5">${[1,2,3,4,5].map(i=>`<span class="${i<=Math.round(n)?'':'off'}">${ic('star')}</span>`).join('')}</span>`;
+
+/* ---------- Graphiques ---------- */
+function smooth(p){let d=`M${p[0][0]},${p[0][1]}`;for(let i=0;i<p.length-1;i++){const mx=(p[i][0]+p[i+1][0])/2;d+=` C${mx},${p[i][1]} ${mx},${p[i+1][1]} ${p[i+1][0]},${p[i+1][1]}`}return d}
+function areaChart(){
+  const W=640,H=250,l=30,r=18,t=18,b=30,max=12,n=WEEKS.length,st=(W-l-r)/(n-1);
+  const X=i=>l+i*st,Y=v=>t+(H-t-b)*(1-v/max);
+  const p1=RECUES.map((v,i)=>[X(i),Y(v)]),p2=TRAITEES.map((v,i)=>[X(i),Y(v)]);
+  const grid=[0,4,8,12].map(v=>`<line class="gl" x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}"/><text x="${l-8}" y="${Y(v)+4}" text-anchor="end">${v}</text>`).join('');
+  const xs=WEEKS.map((w,i)=>`<text x="${X(i)}" y="${H-8}" text-anchor="middle">${i%2===0||i===n-1?'S'+w:''}</text>`).join('');
+  const area=smooth(p1)+` L${X(n-1)},${Y(0)} L${X(0)},${Y(0)} Z`;
+  const e1=p1[n-1],e2=p2[n-1];
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Demandes reçues et traitées par semaine sur 12 semaines">
+  <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--accent);stop-opacity:.32"/><stop offset="1" style="stop-color:var(--accent);stop-opacity:0"/></linearGradient></defs>
+  ${grid}${xs}
+  <path d="${area}" fill="url(#ga)"/>
+  <path class="ln" d="${smooth(p1)}" style="stroke:var(--accent)"/>
+  <path class="ln" d="${smooth(p2)}" style="stroke:var(--sun);stroke-dasharray:2 7"/>
+  <circle cx="${e1[0]}" cy="${e1[1]}" r="5" style="fill:var(--accent);stroke:var(--surface);stroke-width:2.5"/>
+  <circle cx="${e2[0]}" cy="${e2[1]}" r="5" style="fill:var(--sun);stroke:var(--surface);stroke-width:2.5"/>
+  <text x="${e1[0]-9}" y="${e1[1]-10}" text-anchor="end" style="fill:var(--accent);font-weight:700;font-size:12px">${RECUES[n-1]} reçues</text>
+  <text x="${e2[0]-9}" y="${e2[1]+19}" text-anchor="end" style="fill:var(--wait);font-weight:700;font-size:12px">${TRAITEES[n-1]} traitées</text>
+  </svg>`}
+function donut(){
+  const c=ORDER.map(s=>CITOYENS.filter(r=>r.statut===s).length),tot=c.reduce((a,b)=>a+b,0)||1,R=46,C=2*Math.PI*R;let acc=0;
+  const seg=ORDER.map((s,i)=>{const len=c[i]/tot*C;const el=c[i]?`<circle cx="60" cy="60" r="${R}" fill="none" stroke-width="15" stroke-linecap="butt" style="stroke:${STCOL[s]}" stroke-dasharray="${Math.max(len-3,0.1)} ${C-Math.max(len-3,0.1)}" stroke-dashoffset="${-acc}" transform="rotate(-90 60 60)"/>`:'';acc+=len;return el}).join('');
+  return `<div class="donut"><svg viewBox="0 0 120 120" role="img" aria-label="Répartition des demandes par statut"><circle cx="60" cy="60" r="${R}" fill="none" stroke-width="15" style="stroke:var(--surface-2)"/>${seg}<text class="cen" x="60" y="62" text-anchor="middle">${tot}</text><text class="cs" x="60" y="76" text-anchor="middle">demandes</text></svg>
+  <div class="dl-list">${ORDER.map((s,i)=>`<div><span><span class="dot-s" style="background:${STCOL[s]}"></span>${SL[s]}</span><b>${c[i]}</b></div>`).join('')}</div></div>`}
+
+/* ---------- Carte schématique de la commune ---------- */
+function road(d,w){return `<path class="m-road" d="${d}" style="stroke:var(--map-block);stroke-width:${w+2.5}"/><path class="m-road" d="${d}" style="stroke-width:${w}"/>`}
+function mapSvg(list,h){
+  const pins=list.filter(r=>r.x!=null).map(r=>{const px=r.x*4,py=r.y*2.8,hot=r.nouveau||(r.prio==='urgente'&&r.statut!=='termine');
+   return `<g class="m-pin" data-a="open" data-id="${r.id}" tabindex="0" role="button" aria-label="${esc(r.titre)}, ${SL[r.statut]}">${hot?`<circle class="halo" cx="${px}" cy="${py}" r="10" style="fill:var(--urgent)"/>`:''}<circle cx="${px}" cy="${py}" r="9.5" style="fill:${STCOL[r.statut]};stroke:var(--surface);stroke-width:2.6"/><circle cx="${px}" cy="${py}" r="3" fill="#fff"/></g>`}).join('');
+  return `<svg class="map" viewBox="0 0 400 ${h||280}" role="group" aria-label="Carte des signalements sur la commune">
+  <rect class="m-land" width="400" height="280"/>
+  <path class="m-water" d="M-10,205 C50,180 110,238 195,208 S320,150 410,178 L410,196 C330,170 250,226 190,226 S50,200 -10,226 Z"/>
+  <path class="m-block" d="M20,30 L90,20 L100,70 L30,80 Z"/><path class="m-block" d="M300,200 L380,195 L385,255 L305,262 Z"/><path class="m-block" d="M120,236 L175,240 L170,274 L118,270 Z"/>
+  ${road('M-5,122 C80,118 150,126 215,120 S340,100 405,98',7)}
+  ${road('M210,-5 C212,50 205,90 215,120 S225,200 220,285',6)}
+  ${road('M60,285 C70,230 90,170 150,150 S205,128 215,120',4.5)}
+  ${road('M300,-5 C295,40 285,70 280,112',4)}
+  <g class="m-block"><rect x="168" y="132" width="20" height="14" rx="3"/><rect x="236" y="134" width="22" height="16" rx="3"/><rect x="232" y="88" width="24" height="16" rx="3"/><rect x="172" y="92" width="22" height="15" rx="3"/><rect x="250" y="152" width="20" height="14" rx="3"/><rect x="150" y="156" width="18" height="13" rx="3"/></g>
+  <g><rect x="204" y="128" width="26" height="20" rx="5" style="fill:var(--accent)"/><path d="M208 128 l9 -9 l9 9z" style="fill:var(--accent)"/></g>
+  <text class="m-lbl" x="236" y="168">Mairie</text><text class="m-lbl" x="150" y="186">Place de l'Église</text><text class="m-lbl" x="14" y="112">Route de Vierzon</text><text class="m-lbl" x="330" y="92">Route de Bourges</text><text class="m-lbl" x="228" y="40">Rue de la Gare</text><text class="m-lbl" x="268" y="243" style="fill:#5C86A3">la rivière</text>
+  ${pins}</svg>
+  <div class="legend" style="margin-top:10px">${ORDER.map(s=>`<span><i style="background:${STCOL[s]};border-radius:50%"></i>${SL[s]}</span>`).join('')}<span><i style="background:var(--urgent);border-radius:50%;opacity:.5"></i>Urgent ou nouveau</span></div>`}
+
+/* ---------- Composants ---------- */
+function rowDem(r){const t=TYPES[r.type],s=svc(r.svc);
+  return `<button class="row" data-a="open" data-id="${r.id}"><span class="ri ${t.t}">${ic(t.ic)}</span>
+  <span><span class="tt">${esc(r.titre)}${r.nouveau?'<span class="new">Nouveau</span>':''}${r.prio==='urgente'&&r.statut!=='termine'?'<span class="pill p-urgent">Urgent</span>':''}</span>
+  <span class="mt"><span class="mono">${r.id}</span><span>${esc(r.nom)}</span><span>${esc(r.lieu)}</span><span>${rel(r.ts)}</span><span class="mob">${pill(r.statut)}</span></span></span>
+  <span class="svc tag">${esc(s.nom)}</span><span class="pl">${pill(r.statut)}</span><span class="chev">${ic('chev','sm')}</span></button>`}
+function cardDem(r){const t=TYPES[r.type];
+  return `<button class="kcard" data-a="open" data-id="${r.id}"><span class="mt"><span class="mono">${r.id}</span>${r.nouveau?'<span class="new">Nouveau</span>':''}${r.prio==='urgente'&&r.statut!=='termine'?'<span class="pill p-urgent">Urgent</span>':''}</span>
+  <b>${esc(r.titre)}</b><span class="mt"><span class="tag">${ic(t.ic,'xs')}${t.l}</span><span>${esc(svc(r.svc).nom)}</span></span><span class="mt">${esc(r.nom)} · ${rel(r.ts)}</span></button>`}
+function kpi(cls,icon,tone,label,big,unit,dl){return `<div class="card kpi ${cls}"><div class="top2"><span>${label}</span><span class="kic ${tone}">${ic(icon)}</span></div><div class="big">${big}${unit?` <small>${unit}</small>`:''}</div><div class="dl">${dl}</div></div>`}
+function toast(msg,action){const t=$('#toast');t.innerHTML=`${ic('check')}<span>${msg}</span>${action?`<button data-a="${action[0]}" data-id="${action[1]||''}">${action[2]}</button>`:''}`;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),4800)}
+/* ---------- Vues : tableau de bord, demandes, agents, services ---------- */
+const pl=(n,s,p)=>n>1?p:s;
+const de=c=>/^[aeiouyhéèêâîôAEIOUYHÉÈÊ]/.test(c)?"d'"+c:'de '+c;
+const sky=`<svg class="sky" viewBox="0 0 360 200" aria-hidden="true"><g fill="rgba(255,255,255,.10)"><rect x="36" y="64" width="30" height="106"/><path d="M32 64 L51 22 L70 64z"/><rect x="104" y="104" width="152" height="66"/><path d="M94 104 L180 62 L266 104z"/><rect x="286" y="150" width="8" height="20"/><circle cx="290" cy="136" r="26"/><circle cx="326" cy="150" r="18"/><rect x="323" y="160" width="6" height="10"/></g><g fill="rgba(255,255,255,.2)"><rect x="166" y="136" width="28" height="34" rx="14"/><rect x="120" y="120" width="18" height="22" rx="3"/><rect x="222" y="120" width="18" height="22" rx="3"/><rect x="144" y="120" width="14" height="22" rx="3"/><rect x="202" y="120" width="14" height="22" rx="3"/><circle cx="180" cy="94" r="10"/><rect x="43" y="82" width="16" height="22" rx="8"/></g><rect x="179" y="30" width="2" height="34" fill="rgba(255,255,255,.4)"/><rect x="181" y="31" width="9" height="12" fill="#3157B8" opacity=".85"/><rect x="190" y="31" width="9" height="12" fill="#F2F5F5" opacity=".85"/><rect x="199" y="31" width="9" height="12" fill="#D8403B" opacity=".85"/><rect x="0" y="170" width="360" height="30" fill="rgba(255,255,255,.07)"/></svg>`;
+
+function vDash(){
+  const open=openCit(),att=nAttCit(),ag=nAttAg();
+  const prio=[...open].sort((a,b)=>(b.prio==='urgente')-(a.prio==='urgente')||(b.nouveau?1:0)-(a.nouveau?1:0)||ageJ(b)-ageJ(a)).slice(0,4);
+  const t1=att===1?"1 demande d'habitant attend":`${att} demandes d'habitants attendent`,t2=ag===1?"1 demande d'agent est":`${ag} demandes d'agents sont`;
+  const hello=S.maire?esc(S.maire):'Monsieur le Maire';
+  const ch=SERVICES.map(s=>({s,n:open.filter(r=>r.svc===s.id).length})).sort((a,b)=>b.n-a.n),mx=Math.max(1,...ch.map(c=>c.n));
+  const lastAvis=CITOYENS.filter(r=>r.type==='avis').sort((a,b)=>D(b.ts)-D(a.ts))[0];
+  const dist=[5,4,3,2,1].map(k=>`<div><span>${k} ★</span><span class="bar"><i style="width:${RATINGS[k]/nbAvis()*100}%"></i></span><span class="num">${RATINGS[k]}</span></div>`).join('');
+  return `
+  <div class="hero" style="margin-top:12px">${sky}
+    <span class="date">${fmtD(now(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</span>
+    <h2>Bonjour ${hello}</h2>
+    <p>${t1} une réponse. ${t2} à valider. Le prochain conseil municipal a lieu le 6 novembre.</p>
+    <div class="acts"><button class="btn pri" data-a="go" data-v="dem" data-f="attente">${ic('inbox','sm')}Traiter les demandes</button><button class="btn" data-a="go" data-v="agents">${ic('users','sm')}Demandes des agents</button></div>
+  </div>
+  <div class="g" style="margin-top:16px">
+    ${kpi('kp s3','inbox','t-acc','Demandes ouvertes',open.length,'',`${att} en attente · ${open.length-att} en cours`)}
+    ${kpi('kp s3','gauge','t-prog','Délai moyen de réponse','2,1','jours','<span class="good">−0,6 j</span> par rapport à septembre')}
+    ${kpi('kp s3','star','t-wait','Satisfaction des habitants',fr(moyAvis()),'/ 5',`${nbAvis()} avis ce trimestre`)}
+    ${kpi('kp s3','users','t-wait','Demandes d\'agents à valider',ag,'','Congés, formations, matériel')}
+    <div class="card s8"><div class="ch"><div><h3>Demandes reçues et traitées</h3><span class="sub">Par semaine, sur les 12 dernières semaines</span></div><div class="legend"><span><i style="background:var(--accent)"></i>Reçues</span><span><i style="background:var(--sun)"></i>Traitées</span></div></div>${areaChart()}</div>
+    <div class="card s4"><div class="ch"><div><h3>Où en sont les demandes</h3><span class="sub">Toutes les demandes récentes</span></div></div>${donut()}<p class="muted" style="margin-top:16px;font-size:14px">${CITOYENS.filter(r=>r.statut==='termine').length} demandes sont déjà réglées sur ${CITOYENS.length}.</p></div>
+    <div class="card s5"><div class="ch"><div><h3>À traiter en priorité</h3><span class="sub">Urgences et demandes qui traînent</span></div><button class="link" data-a="go" data-v="dem">Tout voir ${ic('chev','xs')}</button></div>
+      <div class="list">${prio.map(rowDem).join('')}</div>
+      <button class="attr" style="margin-top:10px" data-a="go" data-v="agents"><span class="ri t-wait">${ic('users')}</span><span><b>${ag} ${pl(ag,'demande d\'agent','demandes d\'agents')} à valider</b><small>Congés, formations, heures supplémentaires</small></span>${ic('chev','sm')}</button></div>
+    <div class="card s7"><div class="ch"><div><h3>Signalements sur la commune</h3><span class="sub">Touchez un point pour ouvrir la demande</span></div><button class="link" data-a="go" data-v="dem" data-mode="carte">Agrandir ${ic('chev','xs')}</button></div>${mapSvg(CITOYENS)}</div>
+    <div class="card s4"><div class="ch"><div><h3>Charge par service</h3><span class="sub">Demandes ouvertes</span></div></div>
+      ${ch.map(c=>`<button class="ld" data-a="svc" data-id="${c.s.id}"><span class="svc-ic" style="background:${c.s.col}">${ic(c.s.ic,'sm')}</span><span class="ldm"><b>${esc(c.s.nom)}</b><span class="bar"><i style="width:${Math.max(c.n/mx*100,4)}%;background:${c.s.col}"></i></span></span><b class="num">${c.n}</b></button>`).join('')}</div>
+    <div class="card s4"><div class="ch"><div><h3>Satisfaction</h3><span class="sub">Avis laissés sur le portail</span></div></div>
+      <div class="score"><b class="num">${fr(moyAvis())}</b><span class="muted">sur 5</span></div>${stars(moyAvis())}
+      <div class="dist">${dist}</div>${lastAvis?`<div class="quote">« ${esc(lastAvis.msg)} »<br><small class="faint">${esc(lastAvis.nom)}, ${rel(lastAvis.ts)}</small></div>`:''}</div>
+    <div class="card s4"><div class="ch"><div><h3>Prochaines échéances</h3><span class="sub">Agenda du maire</span></div></div>
+      ${ECHEANCES.map(e=>`<div class="ev"><div class="dt"><b>${e.j}</b><small>${e.m}</small></div><div><b>${e.t}</b><span>${e.l}</span></div></div>`).join('')}</div>
+  </div>`}
+
+/* ----- Demandes des habitants ----- */
+function demFiltered(statusToo){
+  const q=S.dem.q.trim().toLowerCase();
+  return CITOYENS.filter(r=>(!statusToo||S.dem.f==='tous'||r.statut===S.dem.f)&&(S.dem.s==='tous'||r.svc===S.dem.s)&&(!q||(r.titre+' '+r.nom+' '+r.lieu+' '+r.id+' '+r.msg).toLowerCase().includes(q)))
+   .sort((a,b)=>(b.nouveau?1:0)-(a.nouveau?1:0)||D(b.ts)-D(a.ts))}
+function demBody(){
+  const m=S.dem.mode;
+  if(m==='colonnes'){const rows=demFiltered(false),cols=S.dem.f==='tous'?ORDER:[S.dem.f];
+    return `<div class="kan" style="${cols.length<3?'grid-template-columns:minmax(0,1fr)':''}">${cols.map(s=>{const l=rows.filter(r=>r.statut===s);return `<div class="kcol"><h4><span>${pill(s)}</span><span class="faint">${l.length}</span></h4>${l.map(cardDem).join('')||'<div class="empty">Aucune demande</div>'}</div>`}).join('')}</div>`}
+  const rows=demFiltered(true);
+  if(m==='carte'){const loc=rows.filter(r=>r.x!=null);
+    return `<div class="g"><div class="card s7">${mapSvg(loc)}</div><div class="card s5"><div class="ch"><div><h3>${loc.length} ${pl(loc.length,'signalement localisé','signalements localisés')}</h3><span class="sub">Les demandes sans adresse précise n'apparaissent pas sur la carte</span></div></div><div class="list">${loc.map(rowDem).join('')||'<div class="empty">Aucun résultat</div>'}</div></div></div>`}
+  return `<div class="card" style="padding:8px 14px"><div class="list">${rows.map(rowDem).join('')||'<div class="empty">Aucune demande ne correspond à votre recherche.</div>'}</div></div>`}
+function vDem(){
+  const f=S.dem.f,c=s=>s==='tous'?CITOYENS.length:CITOYENS.filter(r=>r.statut===s).length;
+  const sw=[['liste','list','Liste'],['colonnes','cols','Colonnes'],['carte','map','Carte']];
+  return `<div class="vh"><div><h1>Demandes des habitants</h1><p>Tout ce qui arrive du portail citoyen, rangé par service et par statut. Rien ne se perd, rien ne reste sans réponse.</p></div><div class="acts"><button class="btn pri" data-a="go" data-v="portail">${ic('globe','sm')}Voir le portail citoyen</button></div></div>
+  <div class="tools"><div class="chips">${['tous',...ORDER].map(s=>`<button class="chip" data-a="dfil" data-s="${s}" aria-pressed="${f===s}">${s==='tous'?'Toutes':SL[s]}<b>${c(s)}</b></button>`).join('')}</div></div>
+  <div class="tools"><label class="search"><span class="sr">Rechercher</span>${ic('search')}<input id="dsearch" type="search" value="${esc(S.dem.q)}" placeholder="Rechercher une demande" autocomplete="off"></label>
+   <select id="dsvc" aria-label="Filtrer par service"><option value="tous">Tous les services</option>${SERVICES.map(s=>`<option value="${s.id}" ${S.dem.s===s.id?'selected':''}>${esc(s.nom)}</option>`).join('')}</select>
+   <div class="view-sw" role="group" aria-label="Affichage">${sw.map(([k,i,l])=>`<button data-a="dmode" data-m="${k}" aria-pressed="${S.dem.mode===k}">${ic(i,'sm')}${l}</button>`).join('')}</div></div>
+  <div id="dbody">${demBody()}</div>`}
+
+/* ----- Demandes des agents ----- */
+const dayIdx=s=>Math.round((D(s)-D('2026-10-19'))/864e5);
+function conflit(a){
+  if(!a.debut||a.jours<1)return null;const sv=agent(a.agent).svc;
+  const o=DEM_AGENTS.find(b=>b.id!==a.id&&b.debut&&b.jours>=1&&b.issue!=='refuse'&&b.statut!=='termine'&&agent(b.agent).svc===sv&&b.debut<=a.fin&&a.debut<=b.fin);
+  return o?agent(o.agent).nom:null}
+function cardAg(a){
+  const g=agent(a.agent),cf=a.statut==='attente'?conflit(a):null;
+  const per=a.debut?(a.debut===a.fin?fmtD(a.debut):`${fmtD(a.debut)} au ${fmtD(a.fin)}`):'Sans date';
+  const st=a.statut==='termine'&&a.issue==='refuse'?'<span class="pill p-urgent">Refusée</span>':a.statut==='termine'?'<span class="pill p-termine">Terminée</span>':pill(a.statut);
+  const acts=a.statut==='attente'?`<button class="btn ok sm" data-a="agok" data-id="${a.id}">${ic('check','sm')}Accepter</button><button class="btn no sm" data-a="agno" data-id="${a.id}">${ic('x','sm')}Refuser</button>`:a.statut==='en_cours'?`<button class="btn sm" data-a="agdone" data-id="${a.id}">${ic('check','sm')}Marquer comme terminée</button>`:`<span class="faint" style="font-size:13px">${a.issue==='refuse'?'Refusée':'Acceptée'} le ${fmtD(a.ts)}</span>`;
+  return `<div class="card acard"><div class="ahead">${avH(g)}<div><b>${esc(g.nom)}</b><span>${esc(g.poste)}</span></div>${st}</div>
+  <div class="adet"><div><small>Type</small><span>${esc(a.type)}</span></div><div><small>Période</small><span>${per}</span></div><div><small>${/Congés/.test(a.type)?'Solde':'Durée'}</small><span>${/Congés/.test(a.type)?g.solde+' j':a.jours?a.jours+' j':'—'}</span></div></div>
+  <p class="muted" style="font-size:14px">${esc(a.detail)}</p>
+  ${cf?`<div class="pill p-attente" style="white-space:normal;align-self:flex-start">${ic('alert','xs')} Chevauche l'absence de ${esc(cf)} (même service)</div>`:''}
+  <div class="acts" style="align-items:center">${acts}<span class="faint mono" style="margin-left:auto">${a.id}</span></div></div>`}
+function gantt(){
+  const N=35,rows=AGENTS.map(g=>({g,its:DEM_AGENTS.filter(a=>a.agent===g.id&&a.debut&&a.jours>=1&&a.issue!=='refuse'&&dayIdx(a.fin)>=0&&dayIdx(a.debut)<N)})).filter(r=>r.its.length);
+  let h=`<div class="h" style="grid-row:1;grid-column:1"></div>`;
+  for(let i=0;i<N;i++){const dt=new Date(D('2026-10-19').getTime()+i*864e5),we=i%7>=5;h+=`<div class="h${we?' we':''}${i===3?' td':''}" style="grid-row:1;grid-column:${i+2}">${'LMMJVSD'[i%7]}<br>${dt.getDate()}</div>`}
+  rows.forEach((r,ri)=>{const row=ri+2;h+=`<div class="nm" style="grid-row:${row};grid-column:1">${esc(r.g.nom)}</div>`;for(let i=0;i<N;i++)h+=`<div class="c${i%7>=5?' we':''}${i===3?' td':''}" style="grid-row:${row};grid-column:${i+2}"></div>`;
+    r.its.forEach(a=>{const s=Math.max(dayIdx(a.debut),0),e=Math.min(dayIdx(a.fin),N-1);h+=`<div class="b b-${a.statut}" style="grid-row:${row};grid-column:${s+2}/${e+3}" title="${esc(a.type)}">${esc(a.type.split(' ')[0])}</div>`})});
+  return `<div class="gantt"><div class="gt">${h}</div></div>`}
+function vAgents(){
+  const f=S.ag.f,c=s=>s==='tous'?DEM_AGENTS.length:DEM_AGENTS.filter(r=>r.statut===s).length;
+  const list=DEM_AGENTS.filter(a=>f==='tous'||a.statut===f).sort((a,b)=>D(b.ts)-D(a.ts));
+  const decided=DEM_AGENTS.filter(a=>a.statut!=='attente').length,abs=DEM_AGENTS.filter(a=>a.debut&&a.jours>=1&&a.issue!=='refuse'&&dayIdx(a.debut)>=3&&dayIdx(a.debut)<=33).length;
+  return `<div class="vh"><div><h1>Demandes des agents</h1><p>Congés, formations, matériel, heures supplémentaires : chaque agent dépose sa demande depuis son téléphone, vous la validez en un geste.</p></div><div class="acts"><button class="btn pri" data-a="simag">${ic('plus','sm')}Simuler une demande d'agent</button></div></div>
+  <div class="g">
+   ${kpi('kp s4','clock','t-wait','À valider',nAttAg(),'','Les agents sont prévenus de votre réponse')}
+   ${kpi('kp s4','check','t-done','Décisions prises',decided,'','Acceptées, refusées ou terminées')}
+   ${kpi('kp s4','cal','t-prog','Absences à venir',abs,'','Sur les 30 prochains jours')}
+  </div>
+  <div class="tools" style="margin-top:20px"><div class="chips">${[...ORDER,'tous'].map(s=>`<button class="chip" data-a="afil" data-s="${s}" aria-pressed="${f===s}">${s==='tous'?'Toutes':SL[s]}<b>${c(s)}</b></button>`).join('')}</div></div>
+  <div class="agrid">${list.map(cardAg).join('')||'<div class="empty card">Aucune demande dans cette catégorie.</div>'}</div>
+  <div class="card" style="margin-top:20px"><div class="ch"><div><h3>Planning des absences</h3><span class="sub">5 semaines. Les demandes en attente sont hachurées.</span></div><div class="legend"><span><i style="background:var(--wait-soft);border:1px dashed var(--wait)"></i>En attente</span><span><i style="background:var(--prog-soft)"></i>Acceptée</span></div></div>${gantt()}</div>`}
+
+/* ----- Services ----- */
+function vSvc(){
+  return `<div class="vh"><div><h1>Services de la commune</h1><p>Qui fait quoi, qui est disponible et ce qui est en cours dans chaque service.</p></div></div>
+  <div class="svcs">${SERVICES.map(s=>{const ags=AGENTS.filter(a=>a.svc===s.id),o=CITOYENS.filter(r=>r.svc===s.id&&r.statut!=='termine'),w=o.filter(r=>r.statut==='attente').length,pa=DEM_AGENTS.filter(a=>a.statut==='attente'&&agent(a.agent).svc===s.id).length;
+   return `<div class="card svc-card" role="button" tabindex="0" data-a="svc" data-id="${s.id}"><div class="svc-top"><span class="svc-ic" style="background:${s.col}">${ic(s.ic)}</span><div><b>${esc(s.nom)}</b><span>${esc(s.desc)}</span></div></div>
+   <div style="display:flex;align-items:center;gap:10px"><div class="stack">${ags.map(avH).join('')}</div><span class="muted" style="font-size:13.5px">${ags.length} ${pl(ags.length,'agent','agents')} · resp. ${esc(agent(s.resp).nom)}</span></div>
+   <div class="mini-stats"><div><b>${o.length}</b><span>ouvertes</span></div><div><b>${w}</b><span>en attente</span></div><div><b>${s.delai}</b><span>délai moyen</span></div></div>
+   ${pa?`<span class="pill p-attente" style="align-self:flex-start">${pa} ${pl(pa,'demande d\'agent','demandes d\'agents')} à valider</span>`:''}</div>`}).join('')}</div>`}
+/* ---------- Portail citoyen ---------- */
+const THEMES=[['technique','Voirie et éclairage'],['espaces','Propreté et espaces verts'],['secretariat','État civil et élections'],['ecole','École et cantine'],['urbanisme','Urbanisme'],['vie','Salles et associations'],['securite','Sécurité et tranquillité']];
+const FT={signalement:['Signaler un problème','alert','Décrivez le problème','Ex. : un lampadaire éteint, un trou dans la chaussée…'],demande:['Faire une demande','file','Votre demande','Ex. : inscription à la cantine, copie d\'un acte…'],avis:['Donner mon avis','star','Votre avis','Dites-nous ce qui fonctionne ou ce qui peut être amélioré.'],suggestion:['Proposer une idée','bulb','Votre idée','Ex. : un banc, une piste cyclable, un événement…']};
+function formHtml(){
+  const f=S.form,e=f.errs,t=FT[f.type];
+  return `<form id="cform" novalidate>
+  <div class="fld"><span class="lb">Que souhaitez-vous faire ?</span><div class="tsel">${Object.entries(FT).map(([k,v])=>`<button type="button" data-a="ftype" data-t="${k}" aria-pressed="${f.type===k}">${ic(v[1])}${v[0]}</button>`).join('')}</div></div>
+  <div class="fld"><label for="f-theme">Sujet</label><select id="f-theme" data-f="theme">${THEMES.map(([k,l])=>`<option value="${k}" ${f.theme===k?'selected':''}>${l}</option>`).join('')}</select></div>
+  <div class="fld ${e.msg?'bad':''}"><label for="f-msg">${t[2]}</label><textarea id="f-msg" data-f="msg" placeholder="${t[3]}">${esc(f.msg)}</textarea><span class="err">Écrivez quelques mots pour que nous puissions vous répondre.</span></div>
+  ${f.type==='avis'?`<div class="fld ${e.note?'bad':''}"><span class="lb">Votre note</span><div class="starin">${[1,2,3,4,5].map(i=>`<button type="button" class="${f.note>=i?'on':''}" data-a="fstar" data-n="${i}" aria-label="${i} sur 5">${ic('star')}</button>`).join('')}</div><span class="err">Choisissez une note de 1 à 5.</span></div>`:''}
+  ${f.type==='signalement'||f.type==='suggestion'?`<div class="fld"><label for="f-lieu">Où ? (facultatif)</label><input id="f-lieu" data-f="lieu" type="text" value="${esc(f.lieu)}" placeholder="Rue, lieu-dit, repère" autocomplete="off"></div>`:''}
+  ${f.type==='signalement'?`<div class="fld"><span class="lb">Photo (facultatif)</span><label class="upl" for="f-photo">${f.photo?`<img src="${f.photo}" alt="Photo jointe">`:ic('camera')}<span>${f.photo?'Photo ajoutée, touchez pour la changer':'Ajouter une photo'}</span></label><input id="f-photo" class="sr" type="file" accept="image/*"></div>`:''}
+  <div class="fld ${e.nom?'bad':''}"><label for="f-nom">Votre nom</label><input id="f-nom" data-f="nom" type="text" value="${esc(f.nom)}" placeholder="Prénom et nom" autocomplete="off"><span class="err">Indiquez votre nom.</span></div>
+  <div class="fld"><label for="f-mail">E-mail (facultatif)</label><input id="f-mail" data-f="mail" type="email" value="${esc(f.mail)}" placeholder="Pour être prévenu de l'avancement" autocomplete="off"></div>
+  <div class="fld ${e.rgpd?'bad':''}"><label class="chk"><input type="checkbox" data-f="rgpd" ${f.rgpd?'checked':''}><span>J'accepte que la mairie utilise ces informations pour traiter ma demande.</span></label><span class="err">Cochez la case pour envoyer votre message.</span></div>
+  <button class="btn pri lg" type="submit">${ic('send','sm')}Envoyer à la mairie</button></form>`}
+function sentHtml(){
+  const r=CITOYENS.find(x=>x.id===S.sent),s=svc(r.svc);
+  return `<div class="done-box"><div class="okc">${ic('check')}</div><h3>Merci, c'est envoyé</h3><p class="muted">Votre message est transmis au service concerné. Gardez ce numéro pour suivre votre demande.</p><span class="ref">${r.id}</span><p class="muted" style="font-size:14px">${esc(s.nom)} · délai moyen de réponse ${s.delai.replace(' j',' jours')}</p>
+  <div class="acts" style="justify-content:center"><button class="btn pri" data-a="open" data-id="${r.id}">${ic('inbox','sm')}Voir côté mairie</button><button class="btn" data-a="fnew">Envoyer un autre message</button></div></div>`}
+function vPortail(){
+  return `<div class="vh"><div><h1>Portail citoyen</h1><p>Voici ce que voient vos habitants. Essayez-le : envoyez un message, il arrive tout de suite dans votre tableau de bord.</p></div></div>
+  <div class="portal"><div>
+   <div class="steps">
+    <div><span class="kic t-acc">${ic('globe')}</span><span><b>Un lien, un QR code</b><p>Sur le site de la commune, le panneau d'affichage et le bulletin municipal. Rien à installer pour l'habitant.</p></span></div>
+    <div><span class="kic t-prog">${ic('inbox')}</span><span><b>Classé automatiquement</b><p>Chaque message part vers le bon service et reçoit un numéro de suivi. Fini les courriers perdus et les appels en double.</p></span></div>
+    <div><span class="kic t-done">${ic('bell')}</span><span><b>L'habitant reste informé</b><p>Un message à chaque étape : reçue, en cours, réglée. Les avis alimentent votre note de satisfaction.</p></span></div>
+   </div>
+   <div class="urlbox">${ic('globe','sm')}<span>${esc(slug(S.commune))}.fr/mon-avis</span></div>
+   <div class="note-demo">${ic('bulb')}<span><b>Faites le test.</b> Remplissez le formulaire à droite et envoyez. Regardez ensuite la cloche en haut de l'écran, puis la liste des demandes : votre message y figure.</span></div>
+  </div>
+  <div class="phone"><div class="ph-top"><small>Mairie ${esc(de(S.commune))}</small><h3>Mon avis, ma demande</h3><p>Signalez un problème, posez une question ou donnez votre avis. Nous vous répondons rapidement.</p></div><div class="ph-body">${S.sent?sentHtml():formHtml()}</div></div></div>`}
+
+/* ---------- Panneau latéral ---------- */
+function dHead(top,title,pills){return `<div class="dh"><div>${top}<h3>${title}</h3>${pills?`<div class="chips" style="margin-top:10px">${pills}</div>`:''}</div><button class="ibtn" data-a="close" aria-label="Fermer">${ic('x')}</button></div>`}
+function dDem(r){
+  const t=TYPES[r.type],s=svc(r.svc),ag=agent(r.agent);
+  return dHead(`<span class="mono faint">${r.id}</span>`,esc(r.titre),`${pill(r.statut)}${r.prio==='urgente'&&r.statut!=='termine'?'<span class="pill p-urgent">Urgent</span>':''}<span class="tag">${ic(t.ic,'xs')}${t.l}</span>`)+
+  `<div class="db">
+   <div class="sec"><h4>Détails</h4><div class="kv"><div><small>Déposée par</small><span>${esc(r.nom)}</span></div><div><small>Lieu</small><span>${esc(r.lieu)}</span></div><div><small>Reçue</small><span>${fmtD(r.ts)} à ${fmtH(r.ts)}</span></div><div><small>Agent chargé</small><span>${ag?esc(ag.nom):'À attribuer'}</span></div></div></div>
+   <div class="sec"><h4>Message de l'habitant</h4><div class="msg">${esc(r.msg)}</div>${r.photo?`<img src="${r.photo}" alt="Photo jointe" style="margin-top:10px;border-radius:12px;max-height:220px;object-fit:cover;width:100%">`:''}${r.note?`<div style="margin-top:10px">${stars(r.note)}</div>`:''}</div>
+   <div class="sec"><h4>Statut</h4><div class="segs" role="group" aria-label="Statut">${ORDER.map(k=>`<button data-a="dstat" data-s="${k}" aria-pressed="${r.statut===k}">${SL[k]}</button>`).join('')}</div></div>
+   <div class="sec"><h4>Service</h4><div class="fld"><select id="d-svc" aria-label="Service" style="width:100%;border:1.5px solid var(--line);background:var(--surface-2);border-radius:13px;padding:12px">${SERVICES.map(x=>`<option value="${x.id}" ${x.id===r.svc?'selected':''}>${esc(x.nom)}</option>`).join('')}</select></div></div>
+   <div class="sec"><h4>Historique</h4><ol class="tl">${[...r.tl].sort((a,b)=>D(b[0])-D(a[0])).map(e=>`<li><i></i><span><b>${esc(e[1])}</b><small>${fmtD(e[0])} à ${fmtH(e[0])}</small></span></li>`).join('')}</ol></div>
+   <div class="sec"><h4>Répondre à l'habitant</h4><div class="fld"><textarea id="d-reply" placeholder="${r.type==='avis'?'Remerciez l\'habitant pour son retour.':'Écrivez votre réponse. L\'habitant la reçoit avec le suivi de sa demande.'}">${esc(S.reply)}</textarea></div><button class="btn pri" style="margin-top:10px" data-a="sendreply">${ic('send','sm')}Envoyer la réponse</button></div>
+  </div>`}
+function dNotifs(){
+  const list=[...NOTIFS].sort((a,b)=>D(b.ts)-D(a.ts)),grp=ts=>{const dd=Math.floor((now()-D(ts))/864e5);return dd<1&&D(ts).getDate()===now().getDate()?'Aujourd\'hui':dd<2?'Hier':'Plus anciennes'};
+  let last='',h='';list.forEach(n=>{const g=grp(n.ts);if(g!==last){h+=`<div class="grp">${g}</div>`;last=g}
+   h+=`<button class="nitem ${n.lu?'':'un'}" data-a="ngo" data-id="${n.id}"><span class="ri ${n.tone}">${ic(n.ic)}</span><span><b>${esc(n.txt)}</b><small>${rel(n.ts)}</small></span>${n.lu?'<span></span>':'<span class="ud"></span>'}</button>`});
+  return `<div class="dh"><div><h3 style="margin-top:0">Notifications</h3><p class="muted" style="font-size:14px;margin-top:4px">${unread()?`${unread()} ${pl(unread(),'nouvelle','nouvelles')}`:'Tout est à jour'}</p></div><div class="acts"><button class="btn sm" data-a="nread">${ic('check','sm')}Tout lire</button><button class="ibtn" data-a="close" aria-label="Fermer">${ic('x')}</button></div></div>
+  <div class="db"><div>${h}</div><div class="sec"><h4>Mes alertes</h4>${ALERTES.map(a=>`<div class="tg"><span>${a.l}</span><button class="sw" role="switch" aria-checked="${a.on}" aria-label="${esc(a.l)}" data-a="atog" data-id="${a.k}"></button></div>`).join('')}</div></div>`}
+function dSvc(id){
+  const s=svc(id),ags=AGENTS.filter(a=>a.svc===id),o=CITOYENS.filter(r=>r.svc===id&&r.statut!=='termine'),pa=DEM_AGENTS.filter(a=>a.statut==='attente'&&agent(a.agent).svc===id);
+  return dHead(`<span class="svc-ic" style="background:${s.col};width:40px;height:40px;border-radius:12px">${ic(s.ic)}</span>`,esc(s.nom),`<span class="tag">${esc(s.desc)}</span>`)+
+  `<div class="db"><div class="sec"><h4>Équipe</h4><div class="att">${ags.map(a=>`<div class="attr" style="grid-template-columns:40px minmax(0,1fr) auto">${avH(a)}<span><b>${esc(a.nom)}</b><small>${esc(a.poste)}</small></span><span class="tag">${a.solde} j de congés</span></div>`).join('')}</div></div>
+  <div class="sec"><h4>Demandes d'habitants ouvertes (${o.length})</h4><div class="list">${o.map(rowDem).join('')||'<div class="empty">Rien en cours</div>'}</div></div>
+  <div class="sec"><h4>Demandes d'agents à valider (${pa.length})</h4>${pa.map(cardAg).join('')||'<div class="empty">Aucune demande en attente</div>'}</div></div>`}
+function dPerso(){
+  return dHead('','Personnaliser la démonstration')+`<div class="db pers"><p class="muted">Adaptez la maquette à la commune que vous présentez. Les changements s'appliquent tout de suite.</p>
+  <div class="fld"><label for="p-commune">Nom de la commune</label><input id="p-commune" data-p="commune" type="text" value="${esc(S.commune)}" autocomplete="off"></div>
+  <div class="fld"><label for="p-maire">Comment saluer le maire ?</label><input id="p-maire" data-p="maire" type="text" value="${esc(S.maire)}" placeholder="Monsieur le Maire" autocomplete="off"></div>
+  <button class="btn pri" data-a="close">${ic('check','sm')}Terminer</button></div>`}
+/* ---------- Application ---------- */
+const NAV=[['dash','Tableau de bord','Accueil','home'],['dem','Demandes des habitants','Habitants','inbox'],['agents','Demandes des agents','Agents','users'],['svc','Services','Services','building'],['portail','Portail citoyen','Portail','globe']];
+const badge=k=>k==='dem'?nAttCit():k==='agents'?nAttAg():0;
+function renderNav(){
+  $('#nav').innerHTML=`<span class="lbl">Pilotage</span>`+NAV.map(([k,l,s,i])=>`<button data-a="go" data-v="${k}" ${S.view===k?'aria-current="page"':''}>${ic(i)}<span>${l}</span>${badge(k)?`<span class="bdg">${badge(k)}</span>`:''}</button>`).join('');
+  $('#tabs').innerHTML=NAV.map(([k,l,s,i])=>`<button data-a="go" data-v="${k}" ${S.view===k?'aria-current="page"':''}>${ic(i)}<span>${s}</span>${badge(k)?`<span class="bdg">${badge(k)}</span>`:''}</button>`).join('');
+  const u=unread(),b=$('#bellDot');b.hidden=!u;b.textContent=u;
+}
+function applyBrand(){
+  const n=S.commune.trim()||'la commune';
+  $('#sideCommune').textContent='Mairie '+de(n);$('#topCommune').textContent='Mairie '+de(n);
+  $('#meName').textContent=S.maire.trim()||'M. le Maire';
+  const w=(S.maire.trim().split(' ').pop()||'M')[0];$('#meAv').textContent=S.maire.trim()?w.toUpperCase():'M';
+}
+function render(){
+  const v={dash:vDash,dem:vDem,agents:vAgents,svc:vSvc,portail:vPortail}[S.view];
+  $('#view').innerHTML=v();renderNav();applyBrand();
+  if(S.drawer)renderDrawer();
+}
+function go(v,o){
+  o=o||{};S.view=v;if(o.f)S.dem.f=o.f;if(o.mode)S.dem.mode=o.mode;closeDrawer(true);render();window.scrollTo(0,0);
+  const g=$('#gsearch');if(g)g.value=S.dem.q;
+}
+function renderDrawer(){
+  const d=S.drawer;if(!d)return;
+  const h=d.k==='dem'?dDem(CITOYENS.find(r=>r.id===d.id)):d.k==='notifs'?dNotifs():d.k==='svc'?dSvc(d.id):dPerso();
+  const el=$('#drw');const sc=el.querySelector('.db')?el.querySelector('.db').scrollTop:0;el.innerHTML=h;const nb=el.querySelector('.db');if(nb&&d.keep)nb.scrollTop=sc;
+}
+function openDrawer(k,id){
+  S.drawer={k,id};if(k==='dem'){const r=CITOYENS.find(x=>x.id===id);r.nouveau=false;NOTIFS.forEach(n=>{if(n.go&&n.go[1]===id)n.lu=true});S.reply=''}
+  renderDrawer();$('#ovl').classList.add('on');const d=$('#drw');d.classList.add('on');d.setAttribute('aria-hidden','false');renderNav();
+  const f=d.querySelector('.ibtn');if(f&&k!=='perso')f.focus({preventScroll:true});
+}
+function closeDrawer(quiet){
+  if(!S.drawer&&!$('#drw').classList.contains('on'))return;
+  S.drawer=null;$('#ovl').classList.remove('on');const d=$('#drw');d.classList.remove('on');d.setAttribute('aria-hidden','true');if(!quiet)render();
+}
+function pushNotif(i,tone,txt,go){NOTIFS.unshift({id:'n'+Date.now()+Math.floor(Math.random()*99),ic:i,tone,txt,ts:now(),lu:false,go})}
+function setStatus(r,s){
+  if(r.statut===s)return;r.statut=s;r.nouveau=false;
+  r.tl.push([now(),s==='termine'?'Demande clôturée, l\'habitant est prévenu':s==='en_cours'?'Prise en charge par le service':'Remise en attente']);
+  toast(`${r.id} passe en « ${SL[s]} »`);
+}
+function submitForm(){
+  const f=S.form,e={};
+  if(f.msg.trim().length<5)e.msg=1;if(f.nom.trim().length<2)e.nom=1;if(f.type==='avis'&&!f.note)e.note=1;if(!f.rgpd)e.rgpd=1;
+  f.errs=e;if(Object.keys(e).length){render();const b=$('#view .fld.bad');if(b)b.scrollIntoView({block:'center',behavior:'smooth'});return}
+  S.cit++;const id='DC-'+S.cit,txt=f.msg.trim(),loc=f.type==='signalement'?[22+Math.random()*58,20+Math.random()*60]:[null,null];
+  const sv=f.theme,titre=f.type==='avis'?'Avis : '+txt.slice(0,56):txt.length>62?txt.slice(0,60).trim()+'…':txt;
+  const urg=f.type==='signalement'&&/danger|urgent|dangereu|accident|fuite|inond/i.test(txt);
+  const r={id,titre:titre.charAt(0).toUpperCase()+titre.slice(1),type:f.type,svc:sv,statut:'attente',prio:urg?'urgente':'normale',nom:f.nom.trim(),lieu:f.lieu.trim()||'Non précisé',ts:now(),msg:txt,agent:svc(sv).resp,x:loc[0],y:loc[1],nouveau:true,photo:f.photo,note:f.type==='avis'?f.note:undefined,tl:[[now(),'Demande reçue via le portail citoyen']]};
+  CITOYENS.unshift(r);if(f.type==='avis'){RATINGS[f.note]++}
+  pushNotif(urg?'alert':TYPES[f.type].ic,urg?'t-urg':'t-acc',`Nouveau message de ${r.nom} : ${r.titre}`,['dem',id]);
+  S.sent=id;S.form=Object.assign({},S.form,{msg:'',lieu:'',photo:null,note:0,rgpd:false,errs:{}});
+  render();toast(`Nouvelle demande reçue : ${id}`,['open',id,'Ouvrir']);
+}
+let poolI=0;
+function simAgent(){
+  const p=POOL[poolI++%POOL.length];S.agn++;const id='AG-0'+S.agn,a=A(id,p[0],p[1],p[2],p[3],p[4],p[5],'attente',null,now());
+  DEM_AGENTS.unshift(a);S.ag.f='attente';pushNotif('users','t-wait',`${agent(p[0]).nom} dépose une demande : ${p[1].toLowerCase()}`,['agents',id]);
+  render();toast(`${agent(p[0]).nom} vient de déposer une demande`);
+}
+const clickAct={
+  go:el=>go(el.dataset.v,{f:el.dataset.f,mode:el.dataset.mode}),
+  open:el=>{if(S.view==='portail'&&!$('#drw').classList.contains('on')){}openDrawer('dem',el.dataset.id)},
+  close:()=>closeDrawer(),
+  notifs:()=>openDrawer('notifs'),
+  perso:()=>openDrawer('perso'),
+  svc:el=>openDrawer('svc',el.dataset.id),
+  theme:()=>{const r=document.documentElement,dark=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('mc-theme',r.dataset.theme)}catch(e){}themeIcon()},
+  dfil:el=>{S.dem.f=el.dataset.s;render()},
+  dmode:el=>{S.dem.mode=el.dataset.m;render()},
+  afil:el=>{S.ag.f=el.dataset.s;render()},
+  dstat:el=>{setStatus(CITOYENS.find(r=>r.id===S.drawer.id),el.dataset.s);S.drawer.keep=1;render()},
+  sendreply:()=>{const r=CITOYENS.find(x=>x.id===S.drawer.id);if(S.reply.trim().length<2){toast('Écrivez votre réponse avant de l\'envoyer');return}r.tl.push([now(),'Réponse envoyée à '+r.nom]);S.reply='';S.drawer.keep=1;render();toast('Réponse envoyée à '+r.nom)},
+  ngo:el=>{const n=NOTIFS.find(x=>x.id===el.dataset.id);n.lu=true;const g=n.go;if(!g){render();return}
+    if(g[0]==='dem')openDrawer('dem',g[1]);else{go(g[0])}},
+  nread:()=>{NOTIFS.forEach(n=>n.lu=true);S.drawer.keep=1;render()},
+  atog:el=>{const a=ALERTES.find(x=>x.k===el.dataset.id);a.on=!a.on;S.drawer.keep=1;renderDrawer()},
+  agok:el=>{const a=DEM_AGENTS.find(x=>x.id===el.dataset.id);a.statut='en_cours';a.issue='accorde';S.drawer&&(S.drawer.keep=1);render();toast(`Demande de ${agent(a.agent).nom} acceptée`)},
+  agno:el=>{const a=DEM_AGENTS.find(x=>x.id===el.dataset.id);a.statut='termine';a.issue='refuse';S.drawer&&(S.drawer.keep=1);render();toast(`Demande de ${agent(a.agent).nom} refusée`)},
+  agdone:el=>{const a=DEM_AGENTS.find(x=>x.id===el.dataset.id);a.statut='termine';render();toast('Demande terminée')},
+  simag:()=>simAgent(),
+  ftype:el=>{S.form.type=el.dataset.t;S.form.errs={};render()},
+  fstar:el=>{S.form.note=+el.dataset.n;delete S.form.errs.note;render()},
+  fnew:()=>{S.sent=null;render()}
+};
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;const f=clickAct[el.dataset.a];if(f)f(el)});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&S.drawer)closeDrawer();
+  if((e.key==='Enter'||e.key===' ')&&e.target.getAttribute&&e.target.getAttribute('role')==='button'&&e.target.tagName!=='BUTTON'){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}))}
+});
+function onField(e){
+  const t=e.target;
+  if(t.dataset.f){S.form[t.dataset.f]=t.type==='checkbox'?t.checked:t.value;if(S.form.errs[t.dataset.f]){delete S.form.errs[t.dataset.f];const fl=t.closest('.fld');if(fl)fl.classList.remove('bad')}if(t.dataset.f==='theme'||t.type==='checkbox'){}}
+  else if(t.dataset.p){S[t.dataset.p]=t.value;applyBrand();if(S.view==='dash'||S.view==='portail')$('#view').innerHTML=(S.view==='dash'?vDash:vPortail)()}
+  else if(t.id==='dsearch'||t.id==='gsearch'){S.dem.q=t.value;if(S.view!=='dem'){go('dem');return}const o=$('#dsearch'),g=$('#gsearch');if(o&&o!==t)o.value=t.value;if(g&&g!==t)g.value=t.value;$('#dbody').innerHTML=demBody()}
+  else if(t.id==='d-reply'){S.reply=t.value}
+}
+document.addEventListener('input',onField);
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='dsvc'){S.dem.s=t.value;$('#dbody').innerHTML=demBody()}
+  else if(t.id==='d-svc'){const r=CITOYENS.find(x=>x.id===S.drawer.id),s=svc(t.value);r.svc=s.id;r.agent=s.resp;r.tl.push([now(),'Transmise à : '+s.nom]);S.drawer.keep=1;render();toast('Demande transmise à '+s.nom)}
+  else if(t.id==='f-photo'&&t.files&&t.files[0]){const fr=new FileReader();fr.onload=()=>{S.form.photo=fr.result;render()};fr.readAsDataURL(t.files[0])}
+});
+document.addEventListener('submit',e=>{if(e.target.id==='cform'){e.preventDefault();submitForm()}});
+function themeIcon(){const r=document.documentElement,dark=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);$('#themeBtn').innerHTML=ic(dark?'sun':'moon')}
+(function init(){
+  try{const t=localStorage.getItem('mc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+  themeIcon();render();
+})();
+</script>
+</body>
+</html>
